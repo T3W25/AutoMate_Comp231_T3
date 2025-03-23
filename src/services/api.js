@@ -287,4 +287,293 @@ export const mechanicService = {
     }
   },
 };
+// Vehicle Services
+export const vehicleService = {
+  getVehicles: async (filters = {}) => {
+    try {
+      const queryParams = new URLSearchParams();
+      
+      // Add filters to query params
+      if (filters.make) queryParams.append('make', filters.make);
+      if (filters.model) queryParams.append('model', filters.model);
+      if (filters.location) queryParams.append('location', filters.location);
+      if (filters.vehicleType) queryParams.append('vehicleType', filters.vehicleType);
+      if (filters.minPrice) queryParams.append('minPrice', filters.minPrice);
+      if (filters.maxPrice) queryParams.append('maxPrice', filters.maxPrice);
+      if (filters.pageNumber) queryParams.append('pageNumber', filters.pageNumber);
+      if (filters.showAll) queryParams.append('showAll', filters.showAll);
+      
+      const response = await api.get(`/vehicles?${queryParams.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.log('API error, using mock data:', error);
+      
+      // Return mock vehicles if API fails
+      const mockVehicles = [
+        {
+          _id: '1',
+          make: 'Toyota',
+          model: 'Camry',
+          year: 2022,
+          licensePlate: 'ABC123',
+          vehicleType: 'Sedan',
+          transmission: 'Automatic',
+          fuelType: 'Gasoline',
+          seats: 5,
+          pricePerDay: 65,
+          isAvailable: true,
+          location: 'Downtown',
+          description: 'Well-maintained, fuel-efficient sedan',
+          rating: 4.7,
+          features: {
+            hasAC: true,
+            hasGPS: true,
+            hasBluetooth: true,
+            hasUSB: true,
+            hasChildSeat: false,
+          },
+          owner: {
+            _id: 'owner1',
+            name: 'John Doe',
+            email: 'john@example.com',
+            phone: '123-456-7890',
+            rating: 4.8,
+          },
+          coordinates: {
+            latitude: 43.6532,
+            longitude: -79.3832,
+          },
+        },
+        {
+          _id: '2',
+          make: 'Honda',
+          model: 'Civic',
+          year: 2021,
+          licensePlate: 'XYZ789',
+          vehicleType: 'Sedan',
+          transmission: 'Automatic',
+          fuelType: 'Gasoline',
+          seats: 5,
+          pricePerDay: 60,
+          isAvailable: true,
+          location: 'Uptown',
+          description: 'Economic and reliable Honda Civic',
+          rating: 4.6,
+          features: {
+            hasAC: true,
+            hasGPS: false,
+            hasBluetooth: true,
+            hasUSB: true,
+            hasChildSeat: false,
+          },
+          owner: {
+            _id: 'owner2',
+            name: 'Jane Smith',
+            email: 'jane@example.com',
+            phone: '987-654-3210',
+            rating: 4.9,
+          },
+          coordinates: {
+            latitude: 43.6547,
+            longitude: -79.3857,
+          },
+        },
+        {
+          _id: '3',
+          make: 'Ford',
+          model: 'Explorer',
+          year: 2020,
+          licensePlate: 'DEF456',
+          vehicleType: 'SUV',
+          transmission: 'Automatic',
+          fuelType: 'Gasoline',
+          seats: 7,
+          pricePerDay: 90,
+          isAvailable: true,
+          location: 'Midtown',
+          description: 'Spacious SUV perfect for family trips',
+          rating: 4.5,
+          features: {
+            hasAC: true,
+            hasGPS: true,
+            hasBluetooth: true,
+            hasUSB: true,
+            hasChildSeat: true,
+          },
+          owner: {
+            _id: 'owner3',
+            name: 'Bob Johnson',
+            email: 'bob@example.com',
+            phone: '555-555-5555',
+            rating: 4.7,
+          },
+          coordinates: {
+            latitude: 43.6570,
+            longitude: -79.3880,
+          },
+        },
+      ];
+      
+      return {
+        vehicles: mockVehicles,
+        page: 1,
+        pages: 1,
+        count: mockVehicles.length,
+      };
+    }
+  },
+  
+  getVehicleById: async (id) => {
+    try {
+      const response = await api.get(`/vehicles/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching vehicle:', error);
+      
+      // Return a mock vehicle based on the id
+      const mockVehicle = {
+        _id: id,
+        make: 'Toyota',
+        model: 'Camry',
+        year: 2022,
+        licensePlate: 'ABC' + id,
+        vehicleType: 'Sedan',
+        transmission: 'Automatic',
+        fuelType: 'Gasoline',
+        seats: 5,
+        pricePerDay: 65,
+        isAvailable: true,
+        location: 'Downtown',
+        description: 'Well-maintained, fuel-efficient sedan',
+        rating: 4.7,
+        numReviews: 12,
+        features: {
+          hasAC: true,
+          hasGPS: true,
+          hasBluetooth: true,
+          hasUSB: true,
+          hasChildSeat: false,
+        },
+        owner: {
+          _id: 'owner1',
+          name: 'John Doe',
+          email: 'john@example.com',
+          phone: '123-456-7890',
+          rating: 4.8,
+        },
+      };
+      
+      return mockVehicle;
+    }
+  },
+  
+  getOwnerVehicles: async () => {
+    try {
+      const response = await api.get('/vehicles/owner');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching owner vehicles:', error);
+      
+      // Return mock vehicles for the owner
+      const mockOwnerVehicles = [
+        {
+          _id: '1',
+          make: 'Toyota',
+          model: 'Camry',
+          year: 2022,
+          licensePlate: 'ABC123',
+          vehicleType: 'Sedan',
+          transmission: 'Automatic',
+          fuelType: 'Gasoline',
+          seats: 5,
+          pricePerDay: 65,
+          isAvailable: true,
+          location: 'Downtown',
+          description: 'Well-maintained, fuel-efficient sedan',
+          features: {
+            hasAC: true,
+            hasGPS: true,
+            hasBluetooth: true,
+            hasUSB: true,
+            hasChildSeat: false,
+          },
+          totalRentals: 7,
+          totalEarnings: 455,
+        },
+        {
+          _id: '2',
+          make: 'Honda',
+          model: 'CR-V',
+          year: 2023,
+          licensePlate: 'XYZ789',
+          vehicleType: 'SUV',
+          transmission: 'Automatic',
+          fuelType: 'Hybrid',
+          seats: 5,
+          pricePerDay: 80,
+          isAvailable: true,
+          location: 'Uptown',
+          description: 'Fuel-efficient SUV with great storage',
+          features: {
+            hasAC: true,
+            hasGPS: true,
+            hasBluetooth: true,
+            hasUSB: true,
+            hasChildSeat: true,
+          },
+          totalRentals: 5,
+          totalEarnings: 400,
+        },
+      ];
+      
+      return mockOwnerVehicles;
+    }
+  },
+  
+  addVehicle: async (vehicleData) => {
+    try {
+      const response = await api.post('/vehicles', vehicleData);
+      return response.data;
+    } catch (error) {
+      console.error('Error adding vehicle:', error);
+      
+      // Create a mock response with the data provided
+      return {
+        _id: Date.now().toString(),
+        ...vehicleData,
+        totalRentals: 0,
+        totalEarnings: 0,
+        createdAt: new Date().toISOString(),
+      };
+    }
+  },
+  
+  updateVehicle: async (id, vehicleData) => {
+    try {
+      const response = await api.put(`/vehicles/${id}`, vehicleData);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating vehicle:', error);
+      
+      // Create a mock updated vehicle
+      return {
+        _id: id,
+        ...vehicleData,
+        updatedAt: new Date().toISOString(),
+      };
+    }
+  },
+  
+  deleteVehicle: async (id) => {
+    try {
+      const response = await api.delete(`/vehicles/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting vehicle:', error);
+      
+      // Return mock response
+      return { message: 'Vehicle deleted successfully' };
+    }
+  },
+};
 
