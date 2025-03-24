@@ -23,8 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/vehicles', require('./routes/vehicleRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
-app.use('/api/mechanic-services', require('./routes/mechanicServiceRoutes'));
-app.use('/api/mechanics', require('./routes/mechanicRoutes'));
+
 
 // Default route
 app.get('/', (req, res) => {

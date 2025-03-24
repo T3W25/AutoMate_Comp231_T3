@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Base URL for API calls
 // Change this to your computer's actual IP address when testing with a physical device
-const API_URL = 'http://192.168.2.15:5000/api';
+const API_URL = 'http://10.0.0.114:5000/api';
 
 // Create axios instance
 const api = axios.create({
@@ -576,4 +576,28 @@ export const vehicleService = {
     }
   },
 };
+// Booking Services
+export const bookingService = {
+  createBooking: async (bookingData) => {
+    const response = await api.post('/bookings', bookingData);
+    return response.data;
+  },
+  
+  getUserBookings: async () => {
+    const response = await api.get('/bookings');
+    return response.data;
+  },
+  
+  getBookingById: async (id) => {
+    const response = await api.get(`/bookings/${id}`);
+    return response.data;
+  },
+
+  updateBookingStatus: async (id, status) => {
+    const response = await api.put(`/bookings/${id}`, { status });
+    return response.data;
+  },
+};
+
+export default api;
 
