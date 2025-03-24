@@ -1,13 +1,9 @@
 {
   "expo": {
-<<<<<<< HEAD
-    "name": "AutoMate-New",
-    "slug": "AutoMate-New",
-=======
+
     "name": "AutoMate_Comp231",
     "slug": "AutoMate_Comp231",
->>>>>>> d5c40e9934ee4db037ee77f2234dadadce785f5b
-    "version": "1.0.0",
+  "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

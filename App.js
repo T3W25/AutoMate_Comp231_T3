@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-<<<<<<< HEAD
+
 
 // Authentication Screens
-import RoleSelectScreen from './src/screens/auth/RoleSelectScreen';
+import RoleSelectScreen from './src/screens/auth/RoleSelectScreen.js';
 import LoginScreen from './src/screens/auth/LoginScreen';
 import RegisterScreen from './src/screens/auth/RegisterScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
@@ -178,18 +178,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-=======
-import MechanicSearchScreen from './src/screens/renter/MechanicSearchScreen';
-const Stack = createStackNavigator();
-export default function App() {
-  return (
-    <NavigationContainer>
-          <Stack.Navigator>
-          <Stack.Screen name="MechanicSearch" component={MechanicSearchScreen} />
-          </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-
->>>>>>> d5c40e9934ee4db037ee77f2234dadadce785f5b
