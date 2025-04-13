@@ -5,7 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 // Base URL for API calls - Update this to your actual backend URL
 // For development on a physical device, use computer's IP address
-const API_URL = 'http://192.168.2.15:5000/api';
+const API_URL = 'https://automate-comp231-t3.onrender.com/api';
 
 // Create axios instance
 const api = axios.create({
