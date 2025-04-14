@@ -1,10 +1,10 @@
-// backend/controllers/notificationController.js
+  
 const User = require('../models/userModel');
 const Notification = require('../models/notificationModel'); // You'll need to create this model
 
-// @desc    Get user notifications
-// @route   GET /api/notifications
-// @access  Private
+  
+  
+  
 const getUserNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find({ user: req.user._id })
@@ -18,9 +18,9 @@ const getUserNotifications = async (req, res) => {
   }
 };
 
-// @desc    Mark notification as read
-// @route   PUT /api/notifications/:id
-// @access  Private
+  
+  
+  
 const markNotificationAsRead = async (req, res) => {
   try {
     const notification = await Notification.findById(req.params.id);
@@ -29,7 +29,7 @@ const markNotificationAsRead = async (req, res) => {
       return res.status(404).json({ message: 'Notification not found' });
     }
     
-    // Check if notification belongs to user
+  
     if (notification.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized to access this notification' });
     }
@@ -44,8 +44,8 @@ const markNotificationAsRead = async (req, res) => {
   }
 };
 
-// @desc    Create a notification (internal function for use by other controllers)
-// @access  Private
+  
+  
 const createNotification = async (userId, title, message, type, data = {}) => {
   try {
     const notification = new Notification({
@@ -65,12 +65,12 @@ const createNotification = async (userId, title, message, type, data = {}) => {
   }
 };
 
-// @desc    Send system-wide notification (admin only)
-// @route   POST /api/notifications/system
-// @access  Private (admin only)
+  
+  
+  
 const sendSystemNotification = async (req, res) => {
   try {
-    // Check if user is admin
+  
     if (req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Only admins can send system notifications' });
     }
@@ -81,7 +81,7 @@ const sendSystemNotification = async (req, res) => {
       return res.status(400).json({ message: 'Please provide title and message' });
     }
     
-    // Find users to notify based on userRole (if specified)
+  
     let userQuery = {};
     if (userRole) {
       userQuery.role = userRole;
@@ -89,7 +89,7 @@ const sendSystemNotification = async (req, res) => {
     
     const users = await User.find(userQuery).select('_id');
     
-    // Create notifications for each user
+  
     const notifications = [];
     for (const user of users) {
       const notification = await createNotification(

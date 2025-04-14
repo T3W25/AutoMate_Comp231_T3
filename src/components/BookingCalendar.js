@@ -36,7 +36,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
   const loadExistingBookings = async () => {
     try {
       setLoadingBookings(true);
-      // Get existing bookings for this vehicle from the API
+  
       const response = await fetch(`http://192.168.2.15:5000/api/bookings/vehicle/${vehicle._id}`);
       
       if (!response.ok) {
@@ -45,7 +45,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
       
       const bookings = await response.json();
       
-      // Format the bookings data for our calendar
+  
       const formattedBookings = bookings.map(booking => ({
         startDate: moment(booking.startDate).format('YYYY-MM-DD'),
         endDate: moment(booking.endDate).format('YYYY-MM-DD'),
@@ -54,7 +54,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
       setExistingBookings(formattedBookings);
     } catch (error) {
       console.error('Error loading bookings:', error);
-      // If API fails, use empty array
+  
       setExistingBookings([]);
     } finally {
       setLoadingBookings(false);
@@ -64,7 +64,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
   const updateMarkedDates = () => {
     const marked = {};
     
-    // Mark unavailable dates from existing bookings
+  
     existingBookings.forEach(booking => {
       const start = moment(booking.startDate);
       const end = moment(booking.endDate);
@@ -81,7 +81,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
       }
     });
     
-    // Mark selected date range
+  
     if (selectedStartDate) {
       marked[selectedStartDate] = {
         selected: true,
@@ -98,7 +98,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
           textColor: 'white'
         };
         
-        // Mark dates in between
+  
         const start = moment(selectedStartDate);
         const end = moment(selectedEndDate);
         
@@ -125,28 +125,28 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
   const handleDayPress = (day) => {
     const dateString = day.dateString;
     
-    // Don't allow selecting dates in the past
+  
     if (moment(dateString).isBefore(moment(), 'day')) {
       return;
     }
     
-    // Don't allow selecting unavailable dates
+  
     if (isDateUnavailable(dateString)) {
       return;
     }
     
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
-      // Start a new selection
+  
       setSelectedStartDate(dateString);
       setSelectedEndDate(null);
     } else {
-      // Complete the selection
+  
       if (moment(dateString).isBefore(moment(selectedStartDate))) {
-        // If end date is before start date, swap them
+  
         setSelectedEndDate(selectedStartDate);
         setSelectedStartDate(dateString);
       } else {
-        // Check if any date in range is unavailable
+  
         const start = moment(selectedStartDate);
         const end = moment(dateString);
         
@@ -189,7 +189,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
       return;
     }
     
-    // Show payment form
+  
     setShowPayment(true);
   };
 
@@ -205,7 +205,7 @@ const BookingCalendar = ({ vehicle, onClose, onBookingComplete }) => {
         paymentId: paymentResult.transactionId,
       };
       
-      // Create the booking using the API
+  
       const booking = await bookingService.createBooking(bookingData);
       
       setIsLoading(false);

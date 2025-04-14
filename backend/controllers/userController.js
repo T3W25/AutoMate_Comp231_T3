@@ -2,23 +2,23 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const MechanicService = require('../models/mechanicServiceModel');
 
-// Generate JWT
+  
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };
 
-// @desc    Register a new user
-// @route   POST /api/users
-// @access  Public
+  
+  
+  
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role, phone } = req.body;
     
     console.log('Attempting to register user:', { name, email, role, phone });
     
-    // Check if user exists
+  
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -26,7 +26,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Create user
+  
     console.log('Creating new user in database');
     const user = await User.create({
       name,
@@ -39,10 +39,10 @@ const registerUser = async (req, res) => {
     if (user) {
       console.log('User created successfully:', user._id);
       
-      // If the user is a mechanic, create a default mechanic profile
+  
       if (role === 'mechanic') {
         try {
-          // Create mechanic profile in the database
+  
           await MechanicService.create({
             mechanic: user._id,
             serviceName: `${name}'s Repair Service`,
@@ -76,14 +76,14 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate a user
-// @route   POST /api/users/login
-// @access  Public
+  
+  
+  
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check for user email
+  
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
@@ -104,9 +104,9 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
+  
+  
+  
 const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -137,7 +137,7 @@ const getMechanics = async (req, res) => {
       return res.status(404).json({ message: 'No mechanics found' });
     }
     
-    // Return mechanic data without sensitive info
+  
     const mechanicsData = mechanics.map(mechanic => ({
       _id: mechanic._id,
       name: mechanic.name,

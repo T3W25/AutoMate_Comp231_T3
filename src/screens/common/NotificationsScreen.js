@@ -1,4 +1,4 @@
-// src/screens/common/NotificationsScreen.js
+  
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -48,15 +48,15 @@ const NotificationsScreen = ({ navigation }) => {
   
   const handleNotificationPress = async (notification) => {
     try {
-      // Mark as read
+  
       await markNotificationAsRead(notification._id);
       
-      // Update local state
+  
       setNotifications(notifications.map(n => 
         n._id === notification._id ? { ...n, isRead: true } : n
       ));
       
-      // Navigate based on notification type
+  
       if (notification.type === 'booking' && notification.data.bookingId) {
         navigation.navigate('BookingDetails', { bookingId: notification.data.bookingId });
       } else if (notification.type === 'service' && notification.data.serviceId) {

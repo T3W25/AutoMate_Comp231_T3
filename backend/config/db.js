@@ -1,4 +1,4 @@
-// config/db.js
+  
 const mongoose = require('mongoose');
 
 /**
@@ -8,8 +8,8 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
-      // No need for useNewUrlParser, useUnifiedTopology, useCreateIndex - they are now default
-      // These options were needed in older versions of mongoose
+  
+  
     });
     
     console.log(`MongoDB Connected: ${conn.connection.host}`);
@@ -20,7 +20,7 @@ const connectDB = async () => {
   }
 };
 
-// Set up event handlers for the mongoose connection
+  
 const setupMongooseEvents = () => {
   mongoose.connection.on('error', err => {
     console.error('MongoDB connection error:', err);
@@ -30,7 +30,7 @@ const setupMongooseEvents = () => {
     console.log('MongoDB disconnected, attempting to reconnect...');
   });
   
-  // Handle process termination
+  
   process.on('SIGINT', async () => {
     await mongoose.connection.close();
     console.log('MongoDB connection closed due to app termination');

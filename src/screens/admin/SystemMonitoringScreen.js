@@ -26,7 +26,7 @@ const SystemMonitoringScreen = () => {
       setStats(response.data);
     } catch (error) {
       console.error('Error loading stats:', error);
-      // Placeholder data for testing with proper structure
+  
       setStats({
         counts: {
           users: 45,

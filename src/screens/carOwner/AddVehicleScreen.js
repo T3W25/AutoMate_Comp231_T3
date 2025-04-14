@@ -18,11 +18,11 @@ const transmissionTypes = ['Automatic', 'Manual'];
 const fuelTypes = ['Gasoline', 'Diesel', 'Electric', 'Hybrid'];
 
 const AddVehicleScreen = ({ navigation, route }) => {
-  // Check if editing mode and get vehicle data from params
+  
   const isEditing = route.params?.isEditing || false;
   const vehicleToEdit = route.params?.vehicle || null;
 
-  // Vehicle details state
+  
   const [make, setMake] = useState(isEditing ? vehicleToEdit.make : '');
   const [model, setModel] = useState(isEditing ? vehicleToEdit.model : '');
   const [year, setYear] = useState(isEditing ? vehicleToEdit.year.toString() : '');
@@ -32,28 +32,28 @@ const AddVehicleScreen = ({ navigation, route }) => {
   const [selectedFuelType, setSelectedFuelType] = useState(isEditing ? vehicleToEdit.fuelType : '');
   const [seats, setSeats] = useState(isEditing ? vehicleToEdit.seats.toString() : '');
   
-  // Pricing and availability state
+  
   const [pricePerDay, setPricePerDay] = useState(isEditing ? vehicleToEdit.pricePerDay.toString() : '');
   const [isAvailable, setIsAvailable] = useState(isEditing ? vehicleToEdit.isAvailable : true);
   
-  // Features state
+  
   const [hasAC, setHasAC] = useState(isEditing ? vehicleToEdit.features.hasAC : true);
   const [hasGPS, setHasGPS] = useState(isEditing ? vehicleToEdit.features.hasGPS : false);
   const [hasBluetooth, setHasBluetooth] = useState(isEditing ? vehicleToEdit.features.hasBluetooth : true);
   const [hasUSB, setHasUSB] = useState(isEditing ? vehicleToEdit.features.hasUSB : true);
   const [hasChildSeat, setHasChildSeat] = useState(isEditing ? vehicleToEdit.features.hasChildSeat : false);
   
-  // Location state
+  
   const [location, setLocation] = useState(isEditing ? vehicleToEdit.location : '');
   
-  // Additional info state
+  
   const [description, setDescription] = useState(isEditing ? vehicleToEdit.description : '');
   
-  // Submitting state
+  
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    // Validate required fields
+  
     if (!make || !model || !year || !pricePerDay || !location) {
       Alert.alert('Validation Error', 'Please fill in all required fields');
       return;
@@ -85,7 +85,7 @@ const AddVehicleScreen = ({ navigation, route }) => {
       };
 
       if (isEditing) {
-        // Update existing vehicle
+  
         await vehicleService.updateVehicle(vehicleToEdit._id, vehicleData);
         
         Alert.alert(
@@ -99,7 +99,7 @@ const AddVehicleScreen = ({ navigation, route }) => {
           ]
         );
       } else {
-        // Add new vehicle
+  
         await vehicleService.addVehicle(vehicleData);
         
         Alert.alert(
@@ -124,7 +124,7 @@ const AddVehicleScreen = ({ navigation, route }) => {
     }
   };
 
-  // Selection helpers
+  
   const renderSelectionItems = (items, selectedItem, onSelect) => {
     return (
       <View style={styles.selectionContainer}>

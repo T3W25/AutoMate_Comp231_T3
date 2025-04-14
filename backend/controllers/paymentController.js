@@ -1,8 +1,8 @@
-// backend/controllers/paymentController.js
+  
 const Booking = require('../models/bookingModel');
 const ServiceRequest = require('../models/mechanicServiceRequestModel');
 
-// Mock payment processor in place of a real payment gateway
+  
 const processPayment = async (amount, paymentDetails) => {
   return {
     success: true,
@@ -12,9 +12,9 @@ const processPayment = async (amount, paymentDetails) => {
   };
 };
 
-// @desc    Process payment for a booking or service
-// @route   POST /api/payments
-// @access  Private
+  
+  
+  
 const createPayment = async (req, res) => {
   try {
     const {
@@ -31,10 +31,10 @@ const createPayment = async (req, res) => {
       });
     }
 
-    // Process payment through payment gateway
+  
     const paymentResult = await processPayment(amount, paymentMethodId || cardDetails);
 
-    // Update booking payment status if bookingId is provided
+  
     if (bookingId) {
       const booking = await Booking.findById(bookingId);
       if (!booking) {
@@ -46,7 +46,7 @@ const createPayment = async (req, res) => {
       await booking.save();
     }
 
-    // Update service request payment status if serviceRequestId is provided
+  
     if (serviceRequestId) {
       const serviceRequest = await ServiceRequest.findById(serviceRequestId);
       if (!serviceRequest) {
@@ -70,13 +70,13 @@ const createPayment = async (req, res) => {
   }
 };
 
-// @desc    Get saved payment methods for a user
-// @route   GET /api/payments/methods
-// @access  Private
+  
+  
+  
 const getPaymentMethods = async (req, res) => {
   try {
-    // In a real app, this would fetch from a database
-    // For now, return mock data
+  
+  
     res.json([
       {
         id: 'pm_1',

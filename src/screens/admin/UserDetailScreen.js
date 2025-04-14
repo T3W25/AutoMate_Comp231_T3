@@ -29,7 +29,7 @@ const UserDetailScreen = ({ route, navigation }) => {
       console.error('Error loading user details:', error);
       Alert.alert('Error', 'Failed to load user details');
       
-      // Mock data for testing
+  
       setUser({
         _id: userId,
         name: 'John Doe',

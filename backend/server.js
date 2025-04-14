@@ -6,30 +6,30 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const { connectDB, setupMongooseEvents } = require('./config/db');
 
-// Load environment variables
+  
 dotenv.config();
 
-// Initialize express app
+  
 const app = express();
 
-// Middleware
+  
 app.use(cors());
 app.use(express.json());
 
-// Create uploads directory if it doesn't exist
+  
 const uploadsDir = path.join(__dirname, 'uploads/service-images');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Serve static files from the uploads directory
+  
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Connect to MongoDB
+  
 connectDB()
   .then(() => {
     setupMongooseEvents();
-    // Continue with server setup after successful DB connection
+  
     startServer();
   })
   .catch(err => {
@@ -37,9 +37,9 @@ connectDB()
     process.exit(1);
   });
 
-// Function to start the server after DB connection
+  
 const startServer = () => {
-  // Routes
+  
   app.use('/api/users', require('./routes/userRoutes'));
   app.use('/api/vehicles', require('./routes/vehicleRoutes'));
   app.use('/api/bookings', require('./routes/bookingRoutes'));
@@ -51,10 +51,10 @@ const startServer = () => {
   app.use('/api/reviews', require('./routes/reviewRoutes'));
   app.use('/api/admin', require('./routes/adminRoutes'));
 
-  // Health check endpoint
+  
   app.get('/api/health', async (req, res) => {
     try {
-      // Get the state of the database connection
+  
       const dbState = mongoose.connection.readyState;
       const states = {
         0: 'disconnected',
@@ -78,25 +78,25 @@ const startServer = () => {
     }
   });
 
-  // Add a route for booking history by vehicle
+  
   app.get('/api/bookings/vehicle/:id', require('./controllers/bookingController').getVehicleBookings);
 
-  // API test route
+  
   app.get('/api/test', (req, res) => {
     res.json({ message: 'Backend is running correctly' });
   });
 
-  // Default route
+  
   app.get('/', (req, res) => {
     res.send('AutoMate API is running');
   });
 
-  // 404 handler for unmatched routes
+  
   app.use('*', (req, res) => {
     res.status(404).json({ message: 'Route not found' });
   });
 
-  // Error handling middleware with enhanced logging
+  
   app.use((err, req, res, next) => {
     console.error('Error details:');
     console.error('Message:', err.message);
@@ -115,20 +115,20 @@ const startServer = () => {
     });
   });
 
-  // Start server
+  
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 };
 
-// Handle uncaught exceptions
+  
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
   process.exit(1);
 });
 
-// Handle unhandled promise rejections
+  
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err);
   process.exit(1);

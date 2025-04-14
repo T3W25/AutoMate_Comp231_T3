@@ -17,7 +17,7 @@ const BookingsScreen = ({ navigation }) => {
   }, [activeTab]);
   
   useEffect(() => {
-    // Refresh data when screen is focused
+  
     const unsubscribe = navigation.addListener('focus', () => {
       loadBookings();
     });
@@ -29,7 +29,7 @@ const BookingsScreen = ({ navigation }) => {
       setLoading(true);
       const allBookings = await bookingService.getUserBookings();
       
-      // Filter bookings based on active tab
+  
       const filtered = allBookings.filter(booking => {
         const isCompleted = booking.status === 'completed' || booking.status === 'declined';
         return activeTab === 'completed' ? isCompleted : !isCompleted;
@@ -41,7 +41,7 @@ const BookingsScreen = ({ navigation }) => {
       console.error('Error loading bookings:', error);
       setError('Failed to load bookings. Please try again.');
       
-      // Attempt to load from cached data if API fails
+  
       try {
         const cachedData = await AsyncStorage.getItem('cachedBookings');
         if (cachedData) {
@@ -61,7 +61,7 @@ const BookingsScreen = ({ navigation }) => {
   };
   
   const handleModifyBooking = (booking) => {
-    // Implement navigation to edit booking
+  
     Alert.alert('Modify Booking', 'This feature will be available soon.');
   };
   
@@ -77,7 +77,7 @@ const BookingsScreen = ({ navigation }) => {
           onPress: async () => {
             try {
               await bookingService.updateBookingStatus(bookingId, 'cancelled');
-              // Refresh bookings
+  
               loadBookings();
               Alert.alert('Success', 'Booking cancelled successfully.');
             } catch (error) {
@@ -94,7 +94,7 @@ const BookingsScreen = ({ navigation }) => {
     <TouchableOpacity 
       style={styles.bookingCard}
       onPress={() => {
-        // Implement booking details navigation
+  
         navigation.navigate('BookingDetails', { bookingId: item.id });
       }}
     >

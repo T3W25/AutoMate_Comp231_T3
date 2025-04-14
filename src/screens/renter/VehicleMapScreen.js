@@ -57,7 +57,7 @@ const VehicleMapScreen = ({ navigation }) => {
       setLoading(true);
       const { vehicles } = await vehicleService.getVehicles({ showAll: 'true' });
       
-      // Filter vehicles with valid coordinates
+  
       const vehiclesWithLocation = vehicles.filter(vehicle => 
         vehicle.coordinates && 
         vehicle.coordinates.latitude && 

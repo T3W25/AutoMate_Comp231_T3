@@ -69,9 +69,9 @@ const conversationSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Index for faster lookups by participant
+  
 conversationSchema.index({ participants: 1 });
-// Index for sorting by recent messages
+  
 conversationSchema.index({ updatedAt: -1 });
 
 const Conversation = mongoose.model('Conversation', conversationSchema);

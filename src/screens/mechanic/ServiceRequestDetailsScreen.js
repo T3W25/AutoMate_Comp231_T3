@@ -1,4 +1,4 @@
-// src/screens/mechanic/ServiceRequestDetailsScreen.js
+  
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -214,7 +214,7 @@ const ServiceRequestDetailsScreen = ({ route, navigation }) => {
             <Text style={styles.sectionTitle}>Photos</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {request.images.map((image, index) => {
-                // Construct the full URL for the image
+  
                 const imageUrl = `http://192.168.2.15:5000${image}`;
                 console.log('Loading image from:', imageUrl);
                 

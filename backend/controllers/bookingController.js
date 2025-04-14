@@ -2,30 +2,30 @@ const Booking = require('../models/bookingModel');
 const Vehicle = require('../models/vehicleModel');
 const User = require('../models/userModel');
 
-// @desc    Create a new booking request
-// @route   POST /api/bookings
-// @access  Private (renters only)
+  
+  
+  
 const createBooking = async (req, res) => {
   try {
     const { vehicleId, startDate, endDate, notes } = req.body;
 
-    // Check if user is a renter
+  
     if (req.user.role !== 'renter') {
       return res.status(403).json({ message: 'Only renters can create bookings' });
     }
 
-    // Check if vehicle exists
+  
     const vehicle = await Vehicle.findById(vehicleId);
     if (!vehicle) {
       return res.status(404).json({ message: 'Vehicle not found' });
     }
 
-    // Check if vehicle is available
+  
     if (!vehicle.isAvailable) {
       return res.status(400).json({ message: 'Vehicle is not available for booking' });
     }
 
-    // Validate dates
+  
     const start = new Date(startDate);
     const end = new Date(endDate);
 
@@ -37,16 +37,16 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ message: 'Start date must be in the future' });
     }
 
-    // Check for overlapping bookings
+  
     const overlappingBookings = await Booking.find({
       vehicle: vehicleId,
       status: { $in: ['pending', 'approved'] },
       $or: [
-        // Booking starts during existing booking
+  
         { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-        // Booking ends during existing booking
+  
         { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-        // Booking encompasses existing booking
+  
         { startDate: { $gte: startDate }, endDate: { $lte: endDate } },
       ],
     });
@@ -55,14 +55,14 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ message: 'Vehicle is already booked during this period' });
     }
 
-    // Calculate rental duration in days
+  
     const durationMs = end.getTime() - start.getTime();
     const durationDays = Math.ceil(durationMs / (1000 * 60 * 60 * 24));
 
-    // Calculate total amount
+  
     const totalAmount = vehicle.pricePerDay * durationDays;
 
-    // Create booking
+  
     const booking = await Booking.create({
       vehicle: vehicleId,
       renter: req.user._id,
@@ -84,14 +84,14 @@ const createBooking = async (req, res) => {
   }
 };
 
-// @desc    Get all bookings for the current user
-// @route   GET /api/bookings
-// @access  Private
+  
+  
+  
 const getUserBookings = async (req, res) => {
   try {
     let bookings;
 
-    // If user is a renter, get bookings as a renter
+  
     if (req.user.role === 'renter') {
       bookings = await Booking.find({ renter: req.user._id })
         .populate({
@@ -104,7 +104,7 @@ const getUserBookings = async (req, res) => {
         })
         .sort({ createdAt: -1 });
     } 
-    // If user is a car owner, get bookings for their vehicles
+  
     else if (req.user.role === 'carOwner') {
       bookings = await Booking.find({ owner: req.user._id })
         .populate({
@@ -117,7 +117,7 @@ const getUserBookings = async (req, res) => {
         })
         .sort({ createdAt: -1 });
     }
-    // If user is not a renter or car owner, return error
+  
     else {
       return res.status(403).json({ message: 'Only renters and car owners can access bookings' });
     }
@@ -129,9 +129,9 @@ const getUserBookings = async (req, res) => {
   }
 };
 
-// @desc    Get booking by ID
-// @route   GET /api/bookings/:id
-// @access  Private (booking participants only)
+  
+  
+  
 const getBookingById = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id)
@@ -152,7 +152,7 @@ const getBookingById = async (req, res) => {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    // Check if user is a participant in the booking
+  
     if (
       booking.renter._id.toString() !== req.user._id.toString() &&
       booking.owner._id.toString() !== req.user._id.toString() &&
@@ -168,20 +168,20 @@ const getBookingById = async (req, res) => {
   }
 };
 
-// @desc    Get all bookings for a specific vehicle
-// @route   GET /api/bookings/vehicle/:id
-// @access  Public
+  
+  
+  
 const getVehicleBookings = async (req, res) => {
   try {
     const vehicleId = req.params.id;
     
-    // Find the vehicle first to verify it exists
+  
     const vehicle = await Vehicle.findById(vehicleId);
     if (!vehicle) {
       return res.status(404).json({ message: 'Vehicle not found' });
     }
     
-    // Find all bookings for this vehicle with status approved or pending
+  
     const bookings = await Booking.find({
       vehicle: vehicleId,
       status: { $in: ['approved', 'pending'] }
@@ -196,9 +196,9 @@ const getVehicleBookings = async (req, res) => {
   }
 };
 
-// @desc    Update booking status
-// @route   PUT /api/bookings/:id
-// @access  Private (booking participants only)
+  
+  
+  
 const updateBookingStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -209,28 +209,28 @@ const updateBookingStatus = async (req, res) => {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    // Validate status
+  
     const validStatuses = ['approved', 'declined', 'completed', 'cancelled'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: 'Invalid status' });
     }
 
-    // Check user authorization
+  
     const isOwner = booking.owner.toString() === req.user._id.toString();
     const isRenter = booking.renter.toString() === req.user._id.toString();
     const isAdmin = req.user.role === 'admin';
 
-    // Only owner can approve or decline
+  
     if ((status === 'approved' || status === 'declined') && !isOwner && !isAdmin) {
       return res.status(403).json({ message: 'Only the vehicle owner can approve or decline bookings' });
     }
 
-    // Only renter can cancel (if not yet approved)
+  
     if (status === 'cancelled' && !isRenter && !isAdmin) {
       return res.status(403).json({ message: 'Only the renter can cancel booking requests' });
     }
 
-    // Can't cancel an already approved booking that's close to start date
+  
     if (status === 'cancelled' && booking.status === 'approved') {
       const startDate = new Date(booking.startDate);
       const now = new Date();
@@ -241,7 +241,7 @@ const updateBookingStatus = async (req, res) => {
       }
     }
 
-    // Only owner can mark as completed (and only if it was approved)
+  
     if (status === 'completed' && !isOwner && !isAdmin) {
       return res.status(403).json({ message: 'Only the vehicle owner can mark bookings as completed' });
     }
@@ -250,11 +250,11 @@ const updateBookingStatus = async (req, res) => {
       return res.status(400).json({ message: 'Only approved bookings can be marked as completed' });
     }
 
-    // Update booking status
+  
     booking.status = status;
     const updatedBooking = await booking.save();
 
-    // If booking is completed, update vehicle stats
+  
     if (status === 'completed') {
       const vehicle = await Vehicle.findById(booking.vehicle);
       if (vehicle) {

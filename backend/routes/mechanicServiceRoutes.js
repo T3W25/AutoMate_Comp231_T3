@@ -1,4 +1,4 @@
-// backend/routes/mechanicServiceRoutes.js
+  
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -15,13 +15,13 @@ const {
 } = require('../controllers/mechanicServiceController');
 const { protect } = require('../middleware/authMiddleware');
 
-// Configure multer for file uploads
+  
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, './uploads/service-images'); 
   },
   filename: function(req, file, cb) {
-    // Generate a unique filename
+  
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + '-' + file.originalname);
   }

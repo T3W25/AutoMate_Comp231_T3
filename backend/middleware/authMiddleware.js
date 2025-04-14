@@ -8,22 +8,22 @@ const User = require('../models/userModel');
 const protect = async (req, res, next) => {
   let token;
 
-  // Check if token exists in Authorization header
+  
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     try {
-      // Get token from header
+  
       token = req.headers.authorization.split(' ')[1];
 
-      // Verify token
+  
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Get user from the token (excluding password)
+  
       req.user = await User.findById(decoded.id).select('-password');
       
-      // Check if user exists
+  
       if (!req.user) {
         return res.status(401).json({ message: 'Not authorized, user not found' });
       }
@@ -72,10 +72,10 @@ const authorize = (roles = []) => {
  */
 const isResourceOwner = (getOwnerId) => async (req, res, next) => {
   try {
-    // Get the owner ID from the request using the provided function
+  
     const ownerId = await getOwnerId(req);
     
-    // Check if the authenticated user is the owner
+  
     if (ownerId && ownerId.toString() !== req.user._id.toString()) {
       return res.status(403).json({ 
         message: 'Access denied. You are not the owner of this resource' 

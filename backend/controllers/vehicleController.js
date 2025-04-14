@@ -1,9 +1,9 @@
 const Vehicle = require('../models/vehicleModel');
 const User = require('../models/userModel');
 
-// @desc    Add a new vehicle
-// @route   POST /api/vehicles
-// @access  Private (car owners only)
+  
+  
+  
 const addVehicle = async (req, res) => {
   try {
     const {
@@ -22,12 +22,12 @@ const addVehicle = async (req, res) => {
       features,
     } = req.body;
 
-    // Check if user is a car owner
+  
     if (req.user.role !== 'carOwner') {
       return res.status(403).json({ message: 'Only car owners can add vehicles' });
     }
 
-    // Create vehicle
+  
     const vehicle = await Vehicle.create({
       owner: req.user._id,
       make,
@@ -56,15 +56,15 @@ const addVehicle = async (req, res) => {
   }
 };
 
-// @desc    Get all vehicles
-// @route   GET /api/vehicles
-// @access  Public
+  
+  
+  
 const getVehicles = async (req, res) => {
   try {
     const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
     
-    // Build filter object based on query parameters
+  
     const filter = {};
     
     if (req.query.make) {
@@ -94,7 +94,7 @@ const getVehicles = async (req, res) => {
       filter.pricePerDay = { $lte: Number(req.query.maxPrice) };
     }
     
-    // Only show available vehicles by default
+  
     if (req.query.showAll !== 'true') {
       filter.isAvailable = true;
     }
@@ -118,12 +118,12 @@ const getVehicles = async (req, res) => {
   }
 };
 
-// @desc    Get owner's vehicles
-// @route   GET /api/vehicles/owner
-// @access  Private (car owners only)
+  
+  
+  
 const getOwnerVehicles = async (req, res) => {
   try {
-    // Check if user is a car owner
+  
     if (req.user.role !== 'carOwner') {
       return res.status(403).json({ message: 'Only car owners can access this route' });
     }
@@ -136,9 +136,9 @@ const getOwnerVehicles = async (req, res) => {
   }
 };
 
-// @desc    Get vehicle by ID
-// @route   GET /api/vehicles/:id
-// @access  Public
+  
+  
+  
 const getVehicleById = async (req, res) => {
   try {
     const vehicle = await Vehicle.findById(req.params.id)
@@ -155,9 +155,9 @@ const getVehicleById = async (req, res) => {
   }
 };
 
-// @desc    Update vehicle
-// @route   PUT /api/vehicles/:id
-// @access  Private (vehicle owner only)
+  
+  
+  
 const updateVehicle = async (req, res) => {
   try {
     const {
@@ -182,12 +182,12 @@ const updateVehicle = async (req, res) => {
       return res.status(404).json({ message: 'Vehicle not found' });
     }
 
-    // Check if user is the vehicle owner
+  
     if (vehicle.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'You are not authorized to update this vehicle' });
     }
 
-    // Update fields
+  
     vehicle.make = make || vehicle.make;
     vehicle.model = model || vehicle.model;
     vehicle.year = year || vehicle.year;
@@ -210,9 +210,9 @@ const updateVehicle = async (req, res) => {
   }
 };
 
-// @desc    Delete vehicle
-// @route   DELETE /api/vehicles/:id
-// @access  Private (vehicle owner only)
+  
+  
+  
 const deleteVehicle = async (req, res) => {
   try {
     const vehicle = await Vehicle.findById(req.params.id);
@@ -221,7 +221,7 @@ const deleteVehicle = async (req, res) => {
       return res.status(404).json({ message: 'Vehicle not found' });
     }
 
-    // Check if user is the vehicle owner
+  
     if (vehicle.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'You are not authorized to delete this vehicle' });
     }

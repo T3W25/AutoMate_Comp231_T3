@@ -1,10 +1,10 @@
-// src/navigation/MechanicNavigator.js
+  
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import Mechanic Screens
+  
 import MechanicHomeScreen from '../screens/mechanic/MechanicHomeScreen';
 import MechanicProfileScreen from '../screens/mechanic/MechanicProfileScreen';
 import ServiceRequestsScreen from '../screens/mechanic/ServiceRequestsScreen';
@@ -15,7 +15,7 @@ import ChatRoomScreen from '../screens/common/ChatRoomScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Stack navigators for each tab to enable nested navigation
+  
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

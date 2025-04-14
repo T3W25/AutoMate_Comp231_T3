@@ -1,4 +1,4 @@
-// src/components/NetworkStatus.js
+  
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
@@ -8,12 +8,12 @@ const NetworkStatus = () => {
   const opacity = useState(new Animated.Value(0))[0];
   
   useEffect(() => {
-    // Subscribe to network state changes
+  
     const unsubscribe = NetInfo.addEventListener(state => {
       const online = state.isConnected && state.isInternetReachable;
       setIsConnected(online);
       
-      // Animate the banner
+  
       Animated.timing(opacity, {
         toValue: online ? 0 : 1,
         duration: 300,

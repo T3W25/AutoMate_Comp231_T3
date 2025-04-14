@@ -25,7 +25,7 @@ const VehicleDetailsScreen = ({ route, navigation }) => {
   const [showBookingCalendar, setShowBookingCalendar] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   
-  // For booking form
+  
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -71,7 +71,7 @@ const VehicleDetailsScreen = ({ route, navigation }) => {
       return;
     }
     
-    // Navigate to chat room, passing the necessary parameters
+  
     navigation.navigate('ChatRoom', {
       otherUserId: vehicle.owner._id,
       vehicleId: vehicle._id
@@ -277,7 +277,7 @@ const VehicleDetailsScreen = ({ route, navigation }) => {
           targetType="Vehicle"
           onClose={() => setShowReviewForm(false)}
           onSuccess={() => {
-            // Refresh the vehicle details to update rating
+  
             loadVehicleDetails();
           }}
         />

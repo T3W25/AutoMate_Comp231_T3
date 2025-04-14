@@ -44,7 +44,7 @@ const NotificationSystemScreen = () => {
         `Notification sent to ${response.data.targetUsers.length} users`
       );
       
-      // Reset form
+  
       setTitle('');
       setMessage('');
     } catch (error) {

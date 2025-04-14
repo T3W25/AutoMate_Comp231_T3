@@ -1,10 +1,10 @@
-// src/navigation/AdminNavigator.js
+  
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import Admin Screens
+  
 import AdminDashboardScreen from '../screens/admin/AdminDashboardScreen';
 import UserManagementScreen from '../screens/admin/UserManagementScreen';
 import SystemMonitoringScreen from '../screens/admin/SystemMonitoringScreen';
@@ -15,7 +15,7 @@ import AdminProfileScreen from '../screens/admin/AdminProfileScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Stack navigators for each tab to enable nested navigation
+  
 const DashboardStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

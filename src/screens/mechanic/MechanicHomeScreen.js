@@ -24,7 +24,7 @@ const MechanicHomeScreen = ({ navigation }) => {
     thisMonth: 0,
   });
   
-  // New state for location tracking
+  
   const [locationTracking, setLocationTracking] = useState(false);
   const [locationSubscription, setLocationSubscription] = useState(null);
 
@@ -34,7 +34,7 @@ const MechanicHomeScreen = ({ navigation }) => {
     checkLocationTrackingStatus();
   }, []);
 
-  // Add effect for location tracking
+  
   useEffect(() => {
     if (locationTracking) {
       startTracking();
@@ -42,7 +42,7 @@ const MechanicHomeScreen = ({ navigation }) => {
       stopTracking();
     }
     
-    // Cleanup on component unmount
+  
     return () => {
       if (locationSubscription) {
         locationSubscription.remove();
@@ -55,7 +55,7 @@ const MechanicHomeScreen = ({ navigation }) => {
       const subscription = await startLocationTracking();
       setLocationSubscription(subscription);
       
-      // Update UI
+  
       Alert.alert('Location Sharing Enabled', 'Customers can now see your real-time location.');
     } catch (error) {
       console.error('Error starting location tracking:', error);
@@ -71,7 +71,7 @@ const MechanicHomeScreen = ({ navigation }) => {
         setLocationSubscription(null);
       }
       
-      // Update UI
+  
       Alert.alert('Location Sharing Disabled', 'Your location is no longer shared with customers.');
     } catch (error) {
       console.error('Error stopping location tracking:', error);
@@ -97,12 +97,12 @@ const MechanicHomeScreen = ({ navigation }) => {
       if (userDataString) {
         const userData = JSON.parse(userDataString);
         
-        // Check if mechanic has location tracking enabled in their profile
+  
         if (userData.mechanicProfile && userData.mechanicProfile.shareLocation !== undefined) {
           setLocationTracking(userData.mechanicProfile.shareLocation);
         }
         
-        // Also check in registered mechanics
+  
         const mechanicsStr = await AsyncStorage.getItem('registeredMechanics');
         if (mechanicsStr) {
           const mechanics = JSON.parse(mechanicsStr);
@@ -135,13 +135,13 @@ const MechanicHomeScreen = ({ navigation }) => {
   const updateMechanicLocation = async (location) => {
     try {
       
-      // user data
+  
       const userDataString = await AsyncStorage.getItem('userData');
       if (!userDataString) return;
       
       const userData = JSON.parse(userDataString);
       
-      // Update user data with location
+  
       if (userData.mechanicProfile) {
         userData.mechanicProfile.currentLocation = {
           latitude: location.latitude,
@@ -149,13 +149,13 @@ const MechanicHomeScreen = ({ navigation }) => {
           lastUpdated: new Date().toISOString()
         };
         
-        // shareLocation preference if it changed
+  
         userData.mechanicProfile.shareLocation = locationTracking;
         
         await AsyncStorage.setItem('userData', JSON.stringify(userData));
       }
       
-      // registered mechanics
+  
       const mechanicsStr = await AsyncStorage.getItem('registeredMechanics');
       if (mechanicsStr) {
         const mechanics = JSON.parse(mechanicsStr);
@@ -192,7 +192,7 @@ const MechanicHomeScreen = ({ navigation }) => {
       
       console.log('Loading service requests for mechanic:', userData._id);
       
-      // First try to get from API
+  
       try {
         const response = await api.get('/mechanic-services');
         if (response.data && response.data.length > 0) {
@@ -201,10 +201,10 @@ const MechanicHomeScreen = ({ navigation }) => {
         }
       } catch (apiError) {
         console.error('API error when loading service requests:', apiError);
-        // Continue to local storage if API fails
+  
       }
       
-      // Try to get from AsyncStorage
+  
       const requestsKey = `serviceRequests_${userData._id}`;
       const requestsStr = await AsyncStorage.getItem(requestsKey);
       
@@ -213,17 +213,17 @@ const MechanicHomeScreen = ({ navigation }) => {
         console.log(`Found ${requests.length} service requests in storage`);
         
         if (requests.length > 0) {
-          // Calculate total earnings
+  
           const completedRequests = requests.filter(r => r.status === 'completed');
           const totalEarnings = completedRequests.reduce((total, req) => total + (req.totalAmount || 0), 0);
           
-          // Set earnings data
+  
           const today = new Date().toISOString().split('T')[0];
           const todayEarnings = completedRequests
             .filter(r => r.completedAt && r.completedAt.startsWith(today))
             .reduce((total, req) => total + (req.totalAmount || 0), 0);
           
-          // Calculate start of week (Sunday)
+  
           const now = new Date();
           const startOfWeek = new Date(now);
           startOfWeek.setDate(now.getDate() - now.getDay());
@@ -239,7 +239,7 @@ const MechanicHomeScreen = ({ navigation }) => {
             thisMonth: totalEarnings, // Simplification
           });
           
-          // Filter for active requests (pending or accepted)
+  
           const active = requests.filter(r => r.status === 'pending' || r.status === 'accepted');
           setActiveRequests(active);
         } else {
@@ -259,7 +259,7 @@ const MechanicHomeScreen = ({ navigation }) => {
     setLocationTracking(value);
     
     if (value) {
-      // Request permission and get current location when turning on
+  
       try {
         const location = await getCurrentLocation();
         if (location) {
@@ -280,7 +280,7 @@ const MechanicHomeScreen = ({ navigation }) => {
         setLocationTracking(false);
       }
     } else {
-      // Update storage to reflect tracking is off
+  
       try {
         const userDataString = await AsyncStorage.getItem('userData');
         if (userDataString) {
@@ -291,7 +291,7 @@ const MechanicHomeScreen = ({ navigation }) => {
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
           }
           
-          // Also update in registered mechanics
+  
           const mechanicsStr = await AsyncStorage.getItem('registeredMechanics');
           if (mechanicsStr) {
             const mechanics = JSON.parse(mechanicsStr);

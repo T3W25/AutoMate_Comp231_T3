@@ -22,7 +22,7 @@ import { sendMessage, markMessagesAsRead, subscribeToConversation } from '../../
 const ChatRoomScreen = ({ route, navigation }) => {
   const { conversationId, otherUserId, otherUserName, vehicleId } = route.params;
   
-  // Log received parameters
+  
   console.log('ChatRoomScreen params:', {
     conversationId,
     otherUserId,
@@ -44,13 +44,13 @@ const ChatRoomScreen = ({ route, navigation }) => {
   const messageCheckInterval = useRef(null);
   const firebaseSubscription = useRef(null);
   
-  // Load user data and initialize chat
+  
   useEffect(() => {
     loadUserData();
     requestImagePermissions();
     
     return () => {
-      // Clean up intervals and subscriptions
+  
       if (messageCheckInterval.current) {
         clearInterval(messageCheckInterval.current);
       }
@@ -102,11 +102,11 @@ const ChatRoomScreen = ({ route, navigation }) => {
     try {
       setLoading(true);
       
-      // Define both possible conversation keys
+  
       const key1 = `chat_${userData._id}_${otherUserId}`;
       const key2 = `chat_${otherUserId}_${userData._id}`;
       
-      // Try to load existing conversation
+  
       let conversationStr = await AsyncStorage.getItem(key1);
       
       if (!conversationStr) {
@@ -116,11 +116,11 @@ const ChatRoomScreen = ({ route, navigation }) => {
       let currentConversation;
       
       if (conversationStr) {
-        // Existing conversation found
+  
         currentConversation = JSON.parse(conversationStr);
         console.log('Loaded existing conversation:', currentConversation.id);
       } else {
-        // Create new conversation
+  
         const newConversationId = conversationId || `conv_${Date.now()}`;
         currentConversation = {
           id: newConversationId,
@@ -144,12 +144,12 @@ const ChatRoomScreen = ({ route, navigation }) => {
         
         console.log('Created new conversation:', currentConversation.id);
         
-        // Save to BOTH keys to ensure both users can access it
+  
         await AsyncStorage.setItem(key1, JSON.stringify(currentConversation));
         await AsyncStorage.setItem(key2, JSON.stringify(currentConversation));
       }
       
-      // Set state
+  
       setConversation(currentConversation);
       setMessages(currentConversation.messages || []);
       
@@ -157,7 +157,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
         setDisplayName(currentConversation.participantNames[otherUserId]);
       }
       
-      // Mark messages as read
+  
       try {
         const updatedConversation = await markMessagesAsRead(currentConversation, userData._id);
         if (updatedConversation && updatedConversation.messages) {
@@ -168,7 +168,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
         console.error('Error marking messages as read:', error);
       }
       
-      // Try to subscribe to Firebase updates
+  
       try {
         if (currentConversation.id) {
           firebaseSubscription.current = subscribeToConversation(
@@ -190,11 +190,11 @@ const ChatRoomScreen = ({ route, navigation }) => {
         console.log('Could not subscribe to Firebase updates, using polling instead:', subscriptionError);
       }
       
-      // Set up polling for new messages as a fallback
+  
       if (!firebaseSubscription.current) {
         messageCheckInterval.current = setInterval(async () => {
           try {
-            // Check for updated conversation
+  
             let updatedStr = await AsyncStorage.getItem(key1);
             if (!updatedStr) {
               updatedStr = await AsyncStorage.getItem(key2);
@@ -207,7 +207,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
                 setMessages(updatedConvo.messages);
                 setConversation(updatedConvo);
                 
-                // Mark messages as read
+  
                 try {
                   const markedConversation = await markMessagesAsRead(updatedConvo, userData._id);
                   if (markedConversation !== updatedConvo) {
@@ -235,7 +235,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
 
   const handlePickImage = async () => {
     try {
-      // Ensure permissions are granted first
+  
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert(
@@ -245,7 +245,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
         return;
       }
 
-      // Launch image picker with specific options
+  
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -255,18 +255,18 @@ const ChatRoomScreen = ({ route, navigation }) => {
       
       console.log('Image picker result:', result);
       
-      // Check if the user canceled the operation
+  
       if (result.canceled === true) {
         return;
       }
       
-      // Handle result based on the version of ImagePicker
+  
       if (result.assets && result.assets.length > 0) {
-        // New version format
+  
         setSelectedImage(result.assets[0].uri);
         setShowImagePreview(true);
       } else if (result.uri) {
-        // Old version format
+  
         setSelectedImage(result.uri);
         setShowImagePreview(true);
       }
@@ -277,7 +277,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
   };
 
   const handleSend = async () => {
-    // Don't send empty messages
+  
     if (!messageText.trim() && !selectedImage) {
       return;
     }
@@ -285,13 +285,13 @@ const ChatRoomScreen = ({ route, navigation }) => {
     try {
       setSendingMessage(true);
       
-      // Make sure we have required data
+  
       if (!userData || !userData._id || !otherUserId) {
         Alert.alert('Error', 'Missing user information. Please try again.');
         return;
       }
       
-      // Make sure conversation exists
+  
       if (!conversation) {
         console.error('No active conversation found');
         Alert.alert('Error', 'Unable to send message. Please try reopening the chat.');
@@ -304,7 +304,7 @@ const ChatRoomScreen = ({ route, navigation }) => {
         conversationId: conversation.id
       });
       
-      // Use the sendMessage function to send and save the message
+  
       const updatedConversation = await sendMessage(
         conversation,
         userData._id,
@@ -313,14 +313,14 @@ const ChatRoomScreen = ({ route, navigation }) => {
         selectedImage
       );
       
-      // Update local state
+  
       setConversation(updatedConversation);
       setMessages(updatedConversation.messages);
       setMessageText('');
       setSelectedImage(null);
       setShowImagePreview(false);
       
-      // Scroll to bottom
+  
       if (flatListRef.current && updatedConversation.messages.length > 0) {
         flatListRef.current.scrollToEnd({ animated: true });
       }

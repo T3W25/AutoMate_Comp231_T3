@@ -31,7 +31,7 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
     try {
       setLoading(true);
       const requests = await mechanicService.getUserServiceRequests();
-      // Sort by date (most recent first)
+  
       requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setServiceRequests(requests);
       setError(null);
@@ -39,7 +39,7 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
       console.error('Error loading service requests:', error);
       setError('Failed to load service requests');
       
-      // Try to get from local storage as fallback
+  
       try {
         const userRequestsKey = `userServiceRequests_${userData._id}`;
         const requestsStr = await AsyncStorage.getItem(userRequestsKey);
@@ -60,7 +60,7 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
   const handleAcceptEstimate = async (requestId) => {
     try {
       await mechanicService.respondToEstimate(requestId, 'accept');
-      // Refresh requests
+  
       loadServiceRequests();
       Alert.alert('Success', 'Estimate accepted. The mechanic will be notified.');
     } catch (error) {
@@ -72,7 +72,7 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
   const handleDeclineEstimate = async (requestId) => {
     try {
       await mechanicService.respondToEstimate(requestId, 'decline');
-      // Refresh requests
+  
       loadServiceRequests();
       Alert.alert('Success', 'Estimate declined');
     } catch (error) {
@@ -83,12 +83,12 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
 
   const handleContactMechanic = async (request) => {
     try {
-      // Get or create chat conversation
+  
       const conversationKey = `chat_${userData._id}_${request.mechanicId}`;
       let conversationStr = await AsyncStorage.getItem(conversationKey);
       
       if (!conversationStr) {
-        // Try reverse order key
+  
         const reverseKey = `chat_${request.mechanicId}_${userData._id}`;
         conversationStr = await AsyncStorage.getItem(reverseKey);
       }
@@ -97,7 +97,7 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
       if (conversationStr) {
         conversation = JSON.parse(conversationStr);
       } else {
-        // Create a new conversation
+  
         conversation = {
           id: Date.now().toString(),
           participants: [userData._id, request.mechanicId],
@@ -112,7 +112,7 @@ const ServiceRequestTracker = ({ navigation, userData }) => {
         await AsyncStorage.setItem(conversationKey, JSON.stringify(conversation));
       }
       
-      // Navigate to chat room
+  
       navigation.navigate('ChatRoom', {
         conversationId: conversation.id,
         otherUserId: request.mechanicId,

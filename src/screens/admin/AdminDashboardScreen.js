@@ -35,12 +35,12 @@ const AdminDashboardScreen = ({ navigation }) => {
 
   const loadStats = async () => {
     try {
-      // Try to fetch from API
+  
       const response = await api.get('/admin/stats');
       setStats(response.data);
     } catch (error) {
       console.error('Error loading stats:', error);
-      // Use placeholder data if API fails
+  
       setStats({
         counts: {
           users: 45,

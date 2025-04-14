@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ServiceRequestTracker from '../renter/ServiceRequestTracker'; // Import the same component
 
-// Mock data for car earnings and recent activities
+  
 const MOCK_EARNINGS = {
   thisMonth: 520,
   lastMonth: 430,
@@ -61,11 +61,11 @@ const CarOwnerHomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // This will refresh the data when the screen is focused
+  
     const unsubscribe = navigation.addListener('focus', () => {
       if (!loading) {
-        // No need to reload user data, but we can trigger
-        // other data-refresh operations here if needed
+  
+  
       }
     });
 

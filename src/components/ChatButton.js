@@ -34,7 +34,7 @@ const ChatButton = ({
     try {
       setLoading(true);
       
-      // Validate required props
+  
       if (!userId) {
         console.error('ChatButton error: userId is required');
         Alert.alert('Error', 'Cannot start conversation: Missing user information');
@@ -42,7 +42,7 @@ const ChatButton = ({
         return;
       }
       
-      // Call the initiate chat function from chatService
+  
       const success = await initiateChat(
         navigation, 
         userId, 
@@ -62,7 +62,7 @@ const ChatButton = ({
     }
   };
 
-  // Determine styles based on size
+  
   const getButtonSize = () => {
     switch (size) {
       case 'small':
@@ -86,7 +86,7 @@ const ChatButton = ({
     }
   };
 
-  // Determine styles based on button type
+  
   const getButtonType = () => {
     switch (buttonType) {
       case 'outlined':

@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    // Basic validation
+  
     if (!email || !password) {
       Alert.alert('Error', 'Please enter email and password');
       return;
@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation, route }) => {
     try {
       const userData = await authService.login(email, password);
 
-      // Check if the role matches
+  
       if (userData.role !== role) {
         Alert.alert(
           'Role Mismatch',
@@ -39,11 +39,11 @@ const LoginScreen = ({ navigation, route }) => {
         return;
       }
 
-      // Store user data and token
+  
       await AsyncStorage.setItem('userToken', userData.token);
       await AsyncStorage.setItem('userData', JSON.stringify(userData));
 
-      // Navigate to Dashboard
+  
       navigation.reset({
         index: 0,
         routes: [{ name: 'Dashboard', params: { role: userData.role } }],
@@ -53,7 +53,7 @@ const LoginScreen = ({ navigation, route }) => {
       
       let errorMessage = 'Unable to login. Please try again.';
       
-      // Extract error message from response if available
+  
       if (error.response && error.response.data && error.response.data.message) {
         errorMessage = error.response.data.message;
       } else if (error.message) {

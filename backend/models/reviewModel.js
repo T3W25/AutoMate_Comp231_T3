@@ -1,4 +1,4 @@
-// backend/models/reviewModel.js
+  
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
@@ -41,7 +41,7 @@ const reviewSchema = new mongoose.Schema({
   },
 });
 
-// Prevent user from reviewing the same booking/service more than once
+  
 reviewSchema.index({ user: 1, bookingId: 1 }, { unique: true, sparse: true });
 reviewSchema.index({ user: 1, serviceId: 1 }, { unique: true, sparse: true });
 

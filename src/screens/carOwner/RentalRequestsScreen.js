@@ -26,10 +26,10 @@ const RentalRequestsScreen = ({ navigation }) => {
   const loadRequests = async () => {
     try {
       setLoading(true);
-      // Get all bookings for the car owner
+  
       const allBookings = await bookingService.getUserBookings();
       
-      // Filter based on active tab
+  
       const filteredBookings = allBookings.filter(booking => booking.status === activeTab);
       setRequests(filteredBookings);
       setError(null);
@@ -44,7 +44,7 @@ const RentalRequestsScreen = ({ navigation }) => {
   const handleApprove = async (id) => {
     try {
       await bookingService.updateBookingStatus(id, 'approved');
-      // Refresh requests
+  
       loadRequests();
       Alert.alert('Success', 'Rental request approved successfully!');
     } catch (error) {

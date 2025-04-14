@@ -11,7 +11,7 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Card details for new payment method
+  
   const [cardholderName, setCardholderName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -28,7 +28,7 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
       const methods = await paymentService.getPaymentMethods();
       setPaymentMethods(methods);
       
-      // Select default payment method if available
+  
       const defaultMethod = methods.find(method => method.isDefault);
       if (defaultMethod) {
         setSelectedPaymentMethod(defaultMethod.id);
@@ -42,21 +42,21 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
   };
 
   const formatCardNumber = (text) => {
-    // Remove all non-digits
+  
     const cleaned = text.replace(/\D/g, '');
     
-    // Add spaces after every 4 digits
+  
     const formatted = cleaned.replace(/(\d{4})(?=\d)/g, '$1 ');
     
-    // Limit to 19 characters (16 digits + 3 spaces)
+  
     return formatted.slice(0, 19);
   };
 
   const formatExpiryDate = (text) => {
-    // Remove all non-digits
+  
     const cleaned = text.replace(/\D/g, '');
     
-    // Add slash after 2 digits (MM/YY format)
+  
     if (cleaned.length > 2) {
       return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
     }
@@ -71,7 +71,7 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
       let paymentDetails;
       
       if (isAddingNew) {
-        // Validate new card details
+  
         if (!cardholderName || cardNumber.length < 19 || expiryDate.length < 5 || cvv.length < 3) {
           Alert.alert('Invalid Information', 'Please enter all card details correctly.');
           setIsLoading(false);
@@ -88,7 +88,7 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
           }
         };
       } else if (selectedPaymentMethod) {
-        // Use selected payment method
+  
         paymentDetails = {
           paymentMethodId: selectedPaymentMethod,
         };
@@ -98,7 +98,7 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
         return;
       }
       
-      // Add IDs to payment request
+  
       if (bookingId) {
         paymentDetails.bookingId = bookingId;
       }
@@ -107,10 +107,10 @@ const PaymentForm = ({ amount, bookingId, serviceRequestId, onClose, onPaymentCo
         paymentDetails.serviceRequestId = serviceRequestId;
       }
       
-      // Add amount
+  
       paymentDetails.amount = amount;
       
-      // Process payment
+  
       const result = await paymentService.processPayment(paymentDetails);
       
       if (result.success) {

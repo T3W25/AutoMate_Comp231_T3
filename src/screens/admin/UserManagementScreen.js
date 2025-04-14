@@ -35,7 +35,7 @@ const UserManagementScreen = ({ navigation }) => {
       console.error('Error loading users:', error);
       Alert.alert('Error', 'Failed to load users');
       
-      // Mock data for testing
+  
       setUsers([
         { _id: '1', name: 'John Doe', email: 'john@example.com', role: 'renter', isActive: true },
         { _id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'carOwner', isActive: true },
@@ -74,7 +74,7 @@ const UserManagementScreen = ({ navigation }) => {
         isActive: !user.isActive,
       });
       
-      // Update the user in the state
+  
       setUsers(
         users.map((u) =>
           u._id === user._id ? { ...u, isActive: !u.isActive } : u
@@ -104,7 +104,7 @@ const UserManagementScreen = ({ navigation }) => {
             try {
               await api.delete(`/admin/users/${user._id}`);
               
-              // Remove the user from the state
+  
               setUsers(users.filter((u) => u._id !== user._id));
               
               Alert.alert('Success', 'User deleted successfully');

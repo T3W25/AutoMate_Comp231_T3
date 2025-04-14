@@ -3,7 +3,7 @@ const Vehicle = require('../models/vehicleModel');
 const Booking = require('../models/bookingModel');
 const MechanicService = require('../models/mechanicServiceModel');
 
-// Get all system users with pagination
+  
 const getUsers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -30,7 +30,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-// Update user status (suspend/activate)
+  
 const updateUserStatus = async (req, res) => {
   try {
     const { isActive } = req.body;
@@ -60,7 +60,7 @@ const updateUserStatus = async (req, res) => {
   }
 };
 
-// Delete a user
+  
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -78,27 +78,27 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// Get system statistics
+  
 const getSystemStats = async (req, res) => {
   try {
-    // Get counts for different entities
+  
     const userCount = await User.countDocuments();
     const vehicleCount = await Vehicle.countDocuments();
     const bookingCount = await Booking.countDocuments();
     const serviceCount = await MechanicService.countDocuments();
     
-    // Get user counts by role
+  
     const renterCount = await User.countDocuments({ role: 'renter' });
     const carOwnerCount = await User.countDocuments({ role: 'carOwner' });
     const mechanicCount = await User.countDocuments({ role: 'mechanic' });
     
-    // Get recent users
+  
     const recentUsers = await User.find({})
       .select('-password')
       .sort({ createdAt: -1 })
       .limit(5);
     
-    // Get recent bookings
+  
     const recentBookings = await Booking.find({})
       .sort({ createdAt: -1 })
       .limit(5)
@@ -124,30 +124,30 @@ const getSystemStats = async (req, res) => {
   }
 };
 
-// Send system notification
+  
 const sendNotification = async (req, res) => {
   try {
     const { title, message, targetRole, targetUsers } = req.body;
     
-    // Validate required fields
+  
     if (!title || !message) {
       return res.status(400).json({ message: 'Title and message are required' });
     }
     
-    // Prepare query for finding users to notify
+  
     let query = {};
     
-    // If targeting specific role
+  
     if (targetRole && targetRole !== 'all') {
       query.role = targetRole;
     }
     
-    // If targeting specific users
+  
     if (targetUsers && targetUsers.length > 0) {
       query._id = { $in: targetUsers };
     }
     
-    // Find users to notify
+  
     const users = await User.find(query).select('_id');
     
     

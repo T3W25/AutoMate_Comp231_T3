@@ -1,10 +1,10 @@
-// backend/controllers/mechanicController.js
+  
 const User = require('../models/userModel');
 const MechanicService = require('../models/mechanicServiceModel');
 
-// @desc    Register as a mechanic or update mechanic profile
-// @route   POST /api/mechanics/profile
-// @access  Private (mechanics only)
+  
+  
+  
 const updateMechanicProfile = async (req, res) => {
   try {
     const {
@@ -25,20 +25,20 @@ const updateMechanicProfile = async (req, res) => {
       services,
     } = req.body;
 
-    // Check if user is a mechanic
+  
     if (req.user.role !== 'mechanic') {
       return res.status(403).json({ message: 'Only mechanics can update mechanic profiles' });
     }
 
-    // Ensure specialization is always an array
+  
     const normalizedSpecializations = Array.isArray(specialization) 
       ? specialization.filter(Boolean)
       : [specialization].filter(Boolean);
 
-    // Find existing mechanic profile or create a new one
+  
     let mechanicProfile = await MechanicService.findOne({ mechanic: req.user._id });
 
-    // Prepare update data
+  
     const updateData = {
       mechanic: req.user._id,
       serviceName: serviceName || (mechanicProfile ? mechanicProfile.serviceName : ''),
@@ -68,21 +68,21 @@ const updateMechanicProfile = async (req, res) => {
       profileImage: profileImage || (mechanicProfile ? mechanicProfile.profileImage : '')
     };
 
-    // Add experience and services to update data
+  
     updateData.experience = experience || { years: 0, description: '' }; 
     updateData.services = services || [];
 
     try {
-      // Update or create profile
+  
       if (mechanicProfile) {
-        // Update existing profile
+  
         mechanicProfile = await MechanicService.findOneAndUpdate(
           { mechanic: req.user._id },
           updateData,
           { new: true, runValidators: true }
         );
       } else {
-        // Create new profile
+  
         mechanicProfile = await MechanicService.create(updateData);
       }
 
@@ -103,15 +103,15 @@ const updateMechanicProfile = async (req, res) => {
   }
 };
 
-// @desc    Get all mechanics
-// @route   GET /api/mechanics
-// @access  Public
+  
+  
+  
 const getMechanics = async (req, res) => {
   try {
     const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
     
-    // Build filter object based on query parameters
+  
     const filter = {};
     
     if (req.query.specialization) {
@@ -138,7 +138,7 @@ const getMechanics = async (req, res) => {
       filter.hourlyRate = { $lte: Number(req.query.maxRate) };
     }
     
-    // Only show available mechanics by default
+  
     if (req.query.showAll !== 'true') {
       filter.isAvailable = true;
     }
@@ -162,9 +162,9 @@ const getMechanics = async (req, res) => {
   }
 };
 
-// @desc    Get mechanic by ID
-// @route   GET /api/mechanics/:id
-// @access  Public
+  
+  
+  
 const getMechanicById = async (req, res) => {
   try {
     const mechanicService = await MechanicService.findById(req.params.id)

@@ -32,20 +32,20 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
       const mechanicData = await mechanicService.getMechanicById(mechanicId);
       console.log("Mechanic Data:", JSON.stringify(mechanicData, null, 2));
 
-      // Get profile image from the nested mechanic object if available
+  
       const profileImage = (mechanicData.profileImage && mechanicData.profileImage.length > 0) || 
                     (mechanicData.mechanic && mechanicData.mechanic.profileImage && 
                      mechanicData.mechanic.profileImage.length > 0) 
                     ? (mechanicData.profileImage || mechanicData.mechanic.profileImage)
                     : 'https://your-default-image-url.com/default-profile.png';
 
-      // Format working hours with days properly
+  
       let workingHoursString = 'Not specified';
       if (mechanicData.workingHours) {
         const start = mechanicData.workingHours.start || '09:00';
         const end = mechanicData.workingHours.end || '18:00';
         
-        // Format hours in 12-hour format with AM/PM
+  
         const formatTime = (time) => {
           const [hours, minutes] = time.split(':');
           const hourNum = parseInt(hours, 10);
@@ -54,7 +54,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
           return `${hour12}:${minutes} ${period}`;
         };
 
-        // Format days available
+  
         let daysString = '';
         if (mechanicData.daysAvailable) {
           const availableDays = [];
@@ -67,7 +67,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
           if (mechanicData.daysAvailable.sunday) availableDays.push('Sunday');
           
           if (availableDays.length > 0) {
-            // If all weekdays are available, simplify to "Monday to Friday"
+  
             if (availableDays.includes('Monday') && 
                 availableDays.includes('Tuesday') && 
                 availableDays.includes('Wednesday') && 
@@ -77,7 +77,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
                 !availableDays.includes('Sunday')) {
               daysString = ', Monday to Friday';
             }
-            // If all weekdays plus Saturday are available
+  
             else if (availableDays.includes('Monday') && 
                      availableDays.includes('Tuesday') && 
                      availableDays.includes('Wednesday') && 
@@ -87,7 +87,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
                      !availableDays.includes('Sunday')) {
               daysString = ', Monday to Saturday';
             }
-            // Otherwise list all available days
+  
             else {
               daysString = ', ' + availableDays.join(', ');
             }
@@ -97,7 +97,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
         workingHoursString = `${formatTime(start)} - ${formatTime(end)}${daysString}`;
       }
       
-      // Format experience
+  
       let formattedExperience = 'Not specified';
       if (mechanicData.experience) {
         if (typeof mechanicData.experience === 'object') {
@@ -108,7 +108,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
         }
       }
       
-      // Comprehensive data mapping with default values
+  
       setMechanic({
         id: mechanicData._id,
         mechanicUserId: mechanicData.mechanic?._id,
@@ -345,7 +345,7 @@ const MechanicDetailsScreen = ({ route, navigation }) => {
           targetType="User"
           onClose={() => setShowReviewForm(false)}
           onSuccess={() => {
-            // Refresh the mechanic details to update rating
+  
             loadMechanicDetails();
           }}
         />

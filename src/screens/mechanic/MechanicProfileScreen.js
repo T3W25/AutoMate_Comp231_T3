@@ -22,7 +22,7 @@ const MechanicProfileScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   
-  // Profile form state
+  
   const [serviceName, setServiceName] = useState('');
   const [description, setDescription] = useState('');
   const [hourlyRate, setHourlyRate] = useState('');
@@ -37,11 +37,11 @@ const MechanicProfileScreen = ({ navigation }) => {
   const [experienceYears, setExperienceYears] = useState('');
   const [experienceDescription, setExperienceDescription] = useState('');
   
-  // New location preferences state
+  
   const [shareLocation, setShareLocation] = useState(false);
   const [officeAddress, setOfficeAddress] = useState('');
   
-  // Days availability state
+  
   const [daysAvailable, setDaysAvailable] = useState({
     monday: true,
     tuesday: true,
@@ -52,7 +52,7 @@ const MechanicProfileScreen = ({ navigation }) => {
     sunday: false,
   });
 
-  // Specialization options
+  
   const specializationOptions = [
     'General Repair',
     'Engine Specialist',
@@ -69,7 +69,7 @@ const MechanicProfileScreen = ({ navigation }) => {
     loadUserData();
     loadMechanicProfile();
     (async () => {
-      // Request camera roll permissions
+  
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
@@ -87,12 +87,12 @@ const MechanicProfileScreen = ({ navigation }) => {
         const userData = JSON.parse(userDataString);
         setUserData(userData);
 
-        // Try to load mechanic profile from AsyncStorage
+  
         const mechanicProfileStr = await AsyncStorage.getItem(`mechanicProfile_${userData._id}`);
         if (mechanicProfileStr) {
           const mechanicProfile = JSON.parse(mechanicProfileStr);
           
-          // Populate form fields with stored data
+  
           setServiceName(mechanicProfile.serviceName || '');
           setDescription(mechanicProfile.description || '');
           setHourlyRate(mechanicProfile.hourlyRate ? mechanicProfile.hourlyRate.toString() : '');
@@ -106,12 +106,12 @@ const MechanicProfileScreen = ({ navigation }) => {
           setOfficeAddress(mechanicProfile.officeAddress || '');
           setProfileImage(mechanicProfile.profileImage || null);
           
-          // Update days available if stored
+  
           if (mechanicProfile.daysAvailable) {
             setDaysAvailable(mechanicProfile.daysAvailable);
           }
 
-          // Mark profile as complete if key fields are filled
+  
           setIsProfileComplete(
             !!serviceName && 
             !!hourlyRate && 
@@ -129,14 +129,14 @@ const MechanicProfileScreen = ({ navigation }) => {
 
   const pickImage = async () => {
     try {
-      // Request permissions if not already granted
+  
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Permission Needed', 'Sorry, we need camera roll permissions to make this work!');
         return;
       }
 
-      // Launch image picker
+  
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images, // Use this instead of [ImagePicker.MediaType.Images]
         allowsEditing: true,
@@ -147,7 +147,7 @@ const MechanicProfileScreen = ({ navigation }) => {
       if (!result.canceled && result.assets && result.assets[0]) {
         const selectedImage = result.assets[0].uri;
         
-        // Optional: Add image size validation
+  
         const fileInfo = await FileSystem.getInfoAsync(selectedImage);
         const maxSize = 5 * 1024 * 1024; // 5MB
         
@@ -158,7 +158,7 @@ const MechanicProfileScreen = ({ navigation }) => {
 
         setProfileImage(selectedImage);
         
-        // Update user data in AsyncStorage
+  
         if (userData) {
           const userDataCopy = {...userData, profileImage: selectedImage};
           await AsyncStorage.setItem('userData', JSON.stringify(userDataCopy));
@@ -178,12 +178,12 @@ const MechanicProfileScreen = ({ navigation }) => {
     try {
       setLoading(true);
       
-      // First try to get from userData.mechanicProfile if it exists
+  
       const userDataString = await AsyncStorage.getItem('userData');
       if (userDataString) {
         const user = JSON.parse(userDataString);
         if (user.mechanicProfile) {
-          // User already has mechanic profile data
+  
           setSpecialization(user.mechanicProfile.specialization || '');
           setHourlyRate(user.mechanicProfile.hourlyRate?.toString() || '');
           setLocation(user.mechanicProfile.location || '');
@@ -193,7 +193,7 @@ const MechanicProfileScreen = ({ navigation }) => {
         }
       }
       
-      // Then try to get from registeredMechanics
+  
       const mechanicsStr = await AsyncStorage.getItem('registeredMechanics');
       if (mechanicsStr && userData) {
         const mechanics = JSON.parse(mechanicsStr);
@@ -209,13 +209,13 @@ const MechanicProfileScreen = ({ navigation }) => {
           setShareLocation(mechanic.shareLocation || false);
           setOfficeAddress(mechanic.officeAddress || '');
           
-          // Set working hours if available
+  
           if (mechanic.workingHours) {
             setWorkingStart(mechanic.workingHours.start || '09:00');
             setWorkingEnd(mechanic.workingHours.end || '18:00');
           }
           
-          // Set days availability if available
+  
           if (mechanic.daysAvailable) {
             setDaysAvailable(mechanic.daysAvailable);
           }
@@ -250,14 +250,14 @@ const MechanicProfileScreen = ({ navigation }) => {
     try {
       setSubmitting(true);
       
-      // Validate required fields
+  
       if (!serviceName || !hourlyRate || !location || specialization.length === 0) {
         Alert.alert('Error', 'Please fill in all required fields');
         setSubmitting(false);
         return;
       }
 
-      // Prepare profile data
+  
       const profileData = {
         serviceName,
         description,
@@ -285,10 +285,10 @@ const MechanicProfileScreen = ({ navigation }) => {
       };
       
       try {
-        // Try API update first
+  
         const apiResponse = await mechanicService.updateMechanicProfile(profileData);
         
-        // Save to AsyncStorage with user-specific key
+  
         if (userData) {
           const mechanicProfileKey = `mechanicProfile_${userData._id}`;
           await AsyncStorage.setItem(mechanicProfileKey, JSON.stringify({
@@ -297,20 +297,20 @@ const MechanicProfileScreen = ({ navigation }) => {
           }));
         }
         
-        // Mark profile as complete
+  
         setIsProfileComplete(true);
         
         Alert.alert('Success', 'Profile updated successfully');
       } catch (apiError) {
         console.error('API update failed:', apiError);
         
-        // Save to AsyncStorage as backup
+  
         if (userData) {
           const mechanicProfileKey = `mechanicProfile_${userData._id}`;
           await AsyncStorage.setItem(mechanicProfileKey, JSON.stringify(profileData));
         }
         
-        // Mark profile as complete
+  
         setIsProfileComplete(true);
         
         Alert.alert(
@@ -342,7 +342,7 @@ const MechanicProfileScreen = ({ navigation }) => {
               await AsyncStorage.removeItem('userToken');
               await AsyncStorage.removeItem('userData');
               
-              // Navigate back to the auth flow
+  
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'RoleSelect' }],

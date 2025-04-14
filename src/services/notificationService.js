@@ -1,9 +1,9 @@
-// src/services/notificationService.js
+  
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from './api';
 
-// Configure notifications
+  
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -12,13 +12,13 @@ Notifications.setNotificationHandler({
   }),
 });
 
-// Register for push notifications
+  
 export const registerForPushNotifications = async () => {
   try {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
     
-    // If permission hasn't been asked yet
+  
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
@@ -28,13 +28,13 @@ export const registerForPushNotifications = async () => {
       return false;
     }
     
-    // Get Expo push token
+  
     const token = await Notifications.getExpoPushTokenAsync();
     
-    // Send token to server
+  
     await api.post('/users/push-token', { token: token.data });
     
-    // Store token locally
+  
     await AsyncStorage.setItem('pushToken', token.data);
     
     return true;
@@ -44,7 +44,7 @@ export const registerForPushNotifications = async () => {
   }
 };
 
-// Get user notifications from API
+  
 export const getUserNotifications = async () => {
   try {
     const response = await api.get('/notifications');
@@ -55,7 +55,7 @@ export const getUserNotifications = async () => {
   }
 };
 
-// Mark notification as read
+  
 export const markNotificationAsRead = async (notificationId) => {
   try {
     const response = await api.put(`/notifications/${notificationId}`);
@@ -66,7 +66,7 @@ export const markNotificationAsRead = async (notificationId) => {
   }
 };
 
-// Send local notification
+  
 export const sendLocalNotification = async (title, body, data = {}) => {
   try {
     await Notifications.scheduleNotificationAsync({
@@ -84,10 +84,10 @@ export const sendLocalNotification = async (title, body, data = {}) => {
   }
 };
 
-// Set up notification listeners
+  
 export const setupNotificationListeners = (navigation) => {
   const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-    // Handle received notification
+  
     console.log('Notification received:', notification);
   });
   
@@ -95,7 +95,7 @@ export const setupNotificationListeners = (navigation) => {
     const { notification } = response;
     const data = notification.request.content.data;
     
-    // Navigate based on notification type
+  
     if (data.type === 'booking') {
       navigation.navigate('Bookings');
     } else if (data.type === 'service') {
