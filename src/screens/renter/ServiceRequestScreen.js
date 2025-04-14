@@ -21,7 +21,7 @@ import * as ImagePicker from 'expo-image-picker';
 const ServiceRequestScreen = ({ route, navigation }) => {
   const { mechanic, userLocation } = route.params || {};
 
-  // Log for debugging
+  
   console.log('ServiceRequestScreen mounted with params:', {
     mechanic: mechanic ? `${mechanic.name} (ID: ${mechanic._id})` : 'No mechanic data',
     userLocation
@@ -30,7 +30,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   
-  // Request form state
+  
   const [vehicleType, setVehicleType] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [description, setDescription] = useState('');
@@ -42,17 +42,17 @@ const ServiceRequestScreen = ({ route, navigation }) => {
   const [address, setAddress] = useState('');
   const [isEmergency, setIsEmergency] = useState(false);
   
-  // Image upload state
+  
   const [images, setImages] = useState([]);
 
-  // Date picker state
+  
   const [selectedDay, setSelectedDay] = useState(new Date().getDate());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedHour, setSelectedHour] = useState(new Date().getHours());
   const [selectedMinute, setSelectedMinute] = useState(new Date().getMinutes());
 
-  // Service types
+  
   const serviceTypes = [
     'Engine Repair',
     'Oil Change',
@@ -63,7 +63,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
     'Other'
   ];
 
-  // Vehicle types
+  
   const vehicleTypes = [
     'Sedan',
     'SUV',
@@ -78,7 +78,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
     loadUserData();
     requestImagePermission();
     
-    // If no userLocation provided, try to get current location
+  
     if (!userLocation) {
       initializeLocation();
     }
@@ -106,19 +106,19 @@ const ServiceRequestScreen = ({ route, navigation }) => {
     try {
       const location = await getCurrentLocation();
       if (location) {
-        // We have location, use 'current' option
+  
         setLocation('current');
       }
     } catch (error) {
       console.error('Error getting location:', error);
-      // Default to 'other' if we can't get location
+  
       setLocation('other');
     }
   };
 
   const pickImage = async () => {
     try {
-      // Request permission first
+  
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       
       if (status !== 'granted') {
@@ -126,7 +126,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
         return;
       }
 
-      // Launch image picker with fixed options
+  
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -135,7 +135,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        // Handle the selected images
+  
         const newImages = [...images];
         result.assets.forEach(asset => {
           if (newImages.length < 3) { // Limit to 3 images
@@ -205,7 +205,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
     try {
       setLoading(true);
   
-      // Validate mechanic ID
+  
       if (!mechanic || !mechanic._id) {
         console.error('No mechanic data available:', mechanic);
         Alert.alert('Error', 'No mechanic selected. Please go back and select a mechanic.');
@@ -213,7 +213,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
         return;
       }
   
-      // Validate required fields
+  
       if (!vehicleType) {
         Alert.alert('Error', 'Please select a vehicle type');
         setLoading(false);
@@ -230,7 +230,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
         return;
       }
   
-      // Combine date and time
+  
       const scheduledDateTime = new Date(
         date.getFullYear(),
         date.getMonth(),
@@ -241,7 +241,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
   
       const formData = new FormData();
       
-      // Ensure mechanicId is a string
+  
       formData.append('mechanicId', String(mechanic._id));
       formData.append('vehicleType', vehicleType);
       formData.append('serviceType', serviceType);
@@ -250,13 +250,13 @@ const ServiceRequestScreen = ({ route, navigation }) => {
       formData.append('scheduledDate', scheduledDateTime.toISOString());
       formData.append('location', location === 'current' ? 'Current Location' : address);
       
-      // Add coordinates if using current location
+  
       if (location === 'current' && userLocation) {
         formData.append('coordinates[latitude]', userLocation.latitude.toString());
         formData.append('coordinates[longitude]', userLocation.longitude.toString());
       }
       
-      // Add images to FormData
+  
       images.forEach((image, index) => {
         const uriParts = image.split('.');
         const fileType = uriParts[uriParts.length - 1];
@@ -306,7 +306,7 @@ const ServiceRequestScreen = ({ route, navigation }) => {
 
   const renderDayOptions = () => {
     const days = [];
-    // Get number of days in the selected month
+  
     const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
     
     for (let i = 1; i <= daysInMonth; i++) {

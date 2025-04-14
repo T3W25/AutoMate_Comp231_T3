@@ -1,13 +1,13 @@
-// services/api.js
+  
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
-// Base URL for API calls - Update this to your actual backend URL
-// For development on a physical device, use computer's IP address
+  
+  
 const API_URL = 'https://automate-comp231-t3.onrender.com/api';
 
-// Create axios instance
+  
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -16,7 +16,7 @@ const api = axios.create({
   timeout: 15000, // Add timeout to prevent hanging requests
 });
 
-// Add a request interceptor to include the token in all requests
+  
 api.interceptors.request.use(
   async (config) => {
     try {
@@ -35,7 +35,7 @@ api.interceptors.request.use(
   }
 );
 
-// Add a response interceptor to handle common errors
+  
 api.interceptors.response.use(
   (response) => {
     return response;
@@ -43,11 +43,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     
-    // Handle unauthorized errors (401)
+  
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
-      // Redirect to login screen if token is invalid
+  
       try {
         await AsyncStorage.removeItem('userToken');
         await AsyncStorage.removeItem('userData');
@@ -58,12 +58,12 @@ api.interceptors.response.use(
       }
     }
     
-    // Handle server errors (500)
+  
     if (error.response && error.response.status >= 500) {
       console.error('Server error:', error.response.data);
     }
     
-    // Handle network errors
+  
     if (error.message === 'Network Error') {
       console.error('Network error - check your connection or server status');
     }
@@ -72,7 +72,7 @@ api.interceptors.response.use(
   }
 );
 
-// Authentication Services
+  
 export const authService = {
   register: async (userData) => {
     try {
@@ -105,14 +105,14 @@ export const authService = {
   },
 };
 
-// Mechanic Services
+  
 export const mechanicService = {
   getMechanics: async (filters = {}) => {
     try {
-      // Build query parameters
+  
       const queryParams = new URLSearchParams();
       
-      // Add filters to query params
+  
       if (filters.specialization) queryParams.append('specialization', filters.specialization);
       if (filters.location) queryParams.append('location', filters.location);
       if (filters.minRate) queryParams.append('minRate', filters.minRate);
@@ -126,7 +126,7 @@ export const mechanicService = {
     } catch (error) {
       console.error('Error in getMechanics:', error.response?.data || error.message);
       
-      // Fallback to AsyncStorage if API call fails
+  
       try {
         console.log('Falling back to local mechanic data');
         const mechanicsStr = await AsyncStorage.getItem('registeredMechanics');
@@ -157,7 +157,7 @@ export const mechanicService = {
 
   createServiceRequest: async (formData) => {
     try {
-      // Use FormData for file uploads
+  
       const response = await api.post('/mechanic-services', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -180,7 +180,7 @@ export const mechanicService = {
     }
   },
   
-  // NEW METHOD: Get User-specific Service Requests
+  
   getUserServiceRequests: async () => {
     try {
       const response = await api.get('/mechanic-services/user');
@@ -228,34 +228,34 @@ export const mechanicService = {
   
   updateMechanicProfile: async (profileData) => {
     try {
-      // Check network connectivity first
+  
       const netInfo = await NetInfo.fetch();
       if (!netInfo.isConnected) {
         throw new Error('No internet connection');
       }
 
-      // Ensure specialization is an array
+  
       if (!Array.isArray(profileData.specialization)) {
         profileData.specialization = [profileData.specialization];
       }
 
-      // Send request
+  
       const response = await api.post('/mechanics/profile', profileData);
       return response.data;
     } catch (error) {
       console.error('Error updating mechanic profile:', error);
       
-      // Detailed error logging
+  
       if (error.response) {
-        // The request was made and the server responded with a status code
+  
         console.error('Server responded with error:', error.response.data);
         throw new Error(error.response.data.message || 'Failed to update profile');
       } else if (error.request) {
-        // The request was made but no response was received
+  
         console.error('No response received:', error.request);
         throw new Error('No response from server. Check your internet connection.');
       } else {
-        // Something happened in setting up the request
+  
         console.error('Error setting up request:', error.message);
         throw error;
       }
@@ -274,7 +274,7 @@ export const mechanicService = {
     }
   },
   
-  // Updated to match the requested method
+  
   respondToEstimate: async (requestId, response) => {
     try {
       const result = await api.put(`/mechanic-services/${requestId}/response`, {
@@ -287,7 +287,7 @@ export const mechanicService = {
     }
   },
   
-  // NEW METHOD: Complete Service Request
+  
   completeServiceRequest: async (requestId, finalAmount) => {
     try {
       const response = await api.put(`/mechanic-services/${requestId}/complete`, {
@@ -300,7 +300,7 @@ export const mechanicService = {
     }
   },
   
-  // NEW METHOD: Process Service Payment
+  
   processServicePayment: async (requestId, paymentDetails) => {
     try {
       const response = await api.post(`/mechanic-services/${requestId}/payment`, paymentDetails);
@@ -312,13 +312,13 @@ export const mechanicService = {
   },
 };
 
-// Vehicle Services
+  
 export const vehicleService = {
   getVehicles: async (filters = {}) => {
     try {
       const queryParams = new URLSearchParams();
       
-      // Add filters to query params
+  
       if (filters.make) queryParams.append('make', filters.make);
       if (filters.model) queryParams.append('model', filters.model);
       if (filters.location) queryParams.append('location', filters.location);
@@ -387,7 +387,7 @@ export const vehicleService = {
   },
 };
 
-// Booking Services
+  
 export const bookingService = {
   createBooking: async (bookingData) => {
     try {
@@ -430,7 +430,7 @@ export const bookingService = {
   },
 };
 
-// Add a payment service
+  
 export const paymentService = {
   processPayment: async (paymentData) => {
     try {
@@ -448,7 +448,7 @@ export const paymentService = {
       return response.data;
     } catch (error) {
       console.error('Error getting payment methods:', error.response?.data || error.message);
-      // For now, return mock data until payment system is implemented
+  
       return [
         {
           id: 'pm_1',
@@ -473,7 +473,7 @@ export const paymentService = {
   },
 };
 
-// Admin Services
+  
 export const adminService = {
   getUsers: async (page = 1, limit = 10) => {
     try {

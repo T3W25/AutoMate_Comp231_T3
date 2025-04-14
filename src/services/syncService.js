@@ -1,9 +1,9 @@
-// src/services/syncService.js
+  
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import { bookingService, mechanicService, vehicleService } from './api';
 
-// Synchronize offline bookings
+  
 export const syncOfflineBookings = async () => {
   try {
     const offlineBookingsStr = await AsyncStorage.getItem('offlineBookings');
@@ -20,14 +20,14 @@ export const syncOfflineBookings = async () => {
       }
     }
     
-    // Clear offline bookings
+  
     await AsyncStorage.removeItem('offlineBookings');
   } catch (error) {
     console.error('Error synchronizing offline bookings:', error);
   }
 };
 
-// Synchronize offline service requests
+  
 export const syncOfflineServiceRequests = async () => {
   try {
     const offlineRequestsStr = await AsyncStorage.getItem('offlineServiceRequests');
@@ -44,14 +44,14 @@ export const syncOfflineServiceRequests = async () => {
       }
     }
     
-    // Clear offline requests
+  
     await AsyncStorage.removeItem('offlineServiceRequests');
   } catch (error) {
     console.error('Error synchronizing offline service requests:', error);
   }
 };
 
-// Synchronize offline locations
+  
 export const syncOfflineLocations = async () => {
   try {
     const offlineLocationsStr = await AsyncStorage.getItem('offlineLocations');
@@ -60,7 +60,7 @@ export const syncOfflineLocations = async () => {
     const offlineLocations = JSON.parse(offlineLocationsStr);
     if (offlineLocations.length === 0) return;
     
-    // Send only the most recent location
+  
     const mostRecent = offlineLocations.sort((a, b) => 
       new Date(b.timestamp) - new Date(a.timestamp)
     )[0];
@@ -70,14 +70,14 @@ export const syncOfflineLocations = async () => {
       longitude: mostRecent.longitude,
     });
     
-    // Clear offline locations
+  
     await AsyncStorage.removeItem('offlineLocations');
   } catch (error) {
     console.error('Error synchronizing offline locations:', error);
   }
 };
 
-// Main synchronization function
+  
 export const synchronizeOfflineData = async () => {
   const netInfo = await NetInfo.fetch();
   
@@ -86,7 +86,7 @@ export const synchronizeOfflineData = async () => {
     return;
   }
   
-  // Check authentication
+  
   try {
     const token = await AsyncStorage.getItem('userToken');
     if (!token) {
@@ -94,7 +94,7 @@ export const synchronizeOfflineData = async () => {
       return;
     }
     
-    // Perform all synchronization tasks
+  
     await syncOfflineBookings();
     await syncOfflineServiceRequests();
     await syncOfflineLocations();
@@ -105,12 +105,12 @@ export const synchronizeOfflineData = async () => {
   }
 };
 
-// Setup background sync
+  
 export const setupBackgroundSync = () => {
-  // Listen for connection changes
+  
   NetInfo.addEventListener(state => {
     if (state.isConnected) {
-      // Connection restored, synchronize data
+  
       synchronizeOfflineData();
     }
   });

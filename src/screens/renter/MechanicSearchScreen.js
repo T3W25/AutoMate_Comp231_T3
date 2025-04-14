@@ -24,7 +24,7 @@ const MechanicSearchScreen = ({ navigation }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [userData, setUserData] = useState(null);
   
-  // Filter states
+  
   const [availableNow, setAvailableNow] = useState(false);
   const [maxDistance, setMaxDistance] = useState('');
   const [maxRate, setMaxRate] = useState('');
@@ -36,7 +36,7 @@ const MechanicSearchScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // Once we have user location, load mechanics
+  
     if (userLocation) {
       loadMechanics();
     }
@@ -61,7 +61,7 @@ const MechanicSearchScreen = ({ navigation }) => {
         setUserLocation(location);
       } else {
         console.log('Location not available, using default');
-        // Set a default location if we can't get the real one
+  
         setUserLocation({
           latitude: 43.6532,
           longitude: -79.3832
@@ -70,7 +70,7 @@ const MechanicSearchScreen = ({ navigation }) => {
       }
     } catch (error) {
       console.error('Error getting location:', error);
-      // Set a default location on error
+  
       setUserLocation({
         latitude: 43.6532,
         longitude: -79.3832
@@ -84,7 +84,7 @@ const MechanicSearchScreen = ({ navigation }) => {
       return Math.random() * 5 + 1; // Random fallback
     }
     
-    // Distance calculation using Haversine formula
+  
     const R = 3958.8; // Earth's radius in miles
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -102,41 +102,41 @@ const MechanicSearchScreen = ({ navigation }) => {
     try {
       setLoading(true);
       
-      // Prepare filters based on user interactions
+  
       const filters = {};
       
-      // Apply search query filter
+  
       if (searchQuery) {
         filters.searchQuery = searchQuery;
       }
       
-      // Apply availability filter
+  
       if (availableNow) {
         filters.showAll = 'false';
       }
       
-      // Apply distance filter
+  
       if (maxDistance) {
         filters.maxDistance = parseFloat(maxDistance);
       }
       
-      // Apply rate filter
+  
       if (maxRate) {
         filters.maxRate = parseFloat(maxRate);
       }
       
-      // Fetch mechanics from service
+  
       const result = await mechanicService.getMechanics(filters);
       
       if (result && result.mechanics && result.mechanics.length > 0) {
         const mechanicsWithDistance = result.mechanics.map(mechanic => {
           let distance;
           
-          // Determine mechanic's coordinates
+  
           const mechanicLat = mechanic.coordinates?.latitude;
           const mechanicLon = mechanic.coordinates?.longitude;
           
-          // Calculate distance if user location and mechanic coordinates are available
+  
           if (userLocation && mechanicLat && mechanicLon) {
             distance = calculateDistance(
               userLocation.latitude,
@@ -145,11 +145,11 @@ const MechanicSearchScreen = ({ navigation }) => {
               mechanicLon
             );
           } else {
-            // Fallback to random distance if coordinates are missing
+  
             distance = 5 + Math.random() * 5;
           }
           
-          // Construct mechanic object with additional details
+  
           return {
             ...mechanic,
             id: mechanic._id, // Ensure consistent ID
@@ -166,7 +166,7 @@ const MechanicSearchScreen = ({ navigation }) => {
           };
         });
         
-        // Sort mechanics based on selected criteria
+  
         let sortedMechanics = [...mechanicsWithDistance];
         
         switch (sortBy) {
@@ -180,13 +180,13 @@ const MechanicSearchScreen = ({ navigation }) => {
             sortedMechanics.sort((a, b) => (a.hourlyRate || 0) - (b.hourlyRate || 0));
             break;
           default:
-            // Default sorting by distance
+  
             sortedMechanics.sort((a, b) => a.distance - b.distance);
         }
         
-        // Apply additional filtering if needed
+  
         const filteredMechanics = sortedMechanics.filter(mechanic => {
-          // Filter by search query
+  
           if (searchQuery) {
             const searchLower = searchQuery.toLowerCase();
             return (
@@ -199,10 +199,10 @@ const MechanicSearchScreen = ({ navigation }) => {
         
         setMechanics(filteredMechanics);
       } else {
-        // No mechanics found
+  
         setMechanics([]);
         
-        // Optional: Show a user-friendly message
+  
         Alert.alert(
           'No Mechanics Found', 
           'We couldn\'t find any mechanics matching your search criteria.'
@@ -211,28 +211,28 @@ const MechanicSearchScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Error loading mechanics:', error);
       
-      // Handle different types of errors
+  
       if (error.response) {
-        // The request was made and the server responded with a status code
+  
         Alert.alert(
           'Error', 
           error.response.data.message || 'Failed to load mechanics. Please try again.'
         );
       } else if (error.request) {
-        // The request was made but no response was received
+  
         Alert.alert(
           'Network Error', 
           'Unable to connect to the server. Please check your internet connection.'
         );
       } else {
-        // Something happened in setting up the request
+  
         Alert.alert(
           'Unexpected Error', 
           'An unexpected error occurred. Please try again later.'
         );
       }
       
-      // Fallback to empty list
+  
       setMechanics([]);
     } finally {
       setLoading(false);
@@ -244,7 +244,7 @@ const MechanicSearchScreen = ({ navigation }) => {
   };
 
   const handleRequestService = (mechanic) => {
-    // Navigation to service request form with mechanic data and user location
+  
     navigation.navigate('ServiceRequest', { 
       mechanic: mechanicData, 
       userLocation: currentLocation
@@ -258,7 +258,7 @@ const MechanicSearchScreen = ({ navigation }) => {
         return;
       }
       
-      // Navigate to chat
+  
       navigation.navigate('ChatRoom', {
         otherUserId: mechanic.id || mechanic._id,
         otherUserName: mechanic.name,

@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import VehicleMapScreen from '../screens/renter/VehicleMapScreen';
 
-// Import Renter Screens
+  
 import RenterHomeScreen from '../screens/renter/RenterHomeScreen';
 import VehicleSearchScreen from '../screens/renter/VehicleSearchScreen';
 import MechanicSearchScreen from '../screens/renter/MechanicSearchScreen';
@@ -18,7 +18,7 @@ import ChatListScreen from '../screens/common/ChatListScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Create a stack navigator for the Mechanic tab
+  
 const MechanicStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -30,7 +30,7 @@ const MechanicStackNavigator = () => {
   );
 };
 
-// Create a stack navigator for Messages tab
+  
 const MessagesStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -40,7 +40,7 @@ const MessagesStackNavigator = () => {
   );
 };
 
-// Create a stack navigator for the Map tab to include chat capability
+  
 const MapStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

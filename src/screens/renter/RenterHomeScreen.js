@@ -26,11 +26,11 @@ const RenterHomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // This will refresh the data when the screen is focused
+  
     const unsubscribe = navigation.addListener('focus', () => {
       if (!loading) {
-        // No need to reload user data, but we can trigger
-        // other data-refresh operations here if needed
+  
+  
       }
     });
 

@@ -23,7 +23,7 @@ const VehicleSearchScreen = ({ navigation }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   
-  // Filter states
+  
   const [electricOnly, setElectricOnly] = useState(false);
   const [maxPrice, setMaxPrice] = useState('');
   const [sortBy, setSortBy] = useState('recommended');
@@ -37,7 +37,7 @@ const VehicleSearchScreen = ({ navigation }) => {
       setLoading(true);
       setError(null);
       
-      // Build filters object
+  
       const apiFilters = {
         ...filters,
         pageNumber,
@@ -51,7 +51,7 @@ const VehicleSearchScreen = ({ navigation }) => {
         apiFilters.maxPrice = maxPrice;
       }
       
-      // Handle sorting - Note: Server-side sorting would be implemented differently
+  
       const { vehicles, pages, count } = await vehicleService.getVehicles(apiFilters);
       
       let sortedVehicles = [...vehicles];
@@ -264,10 +264,10 @@ const VehicleSearchScreen = ({ navigation }) => {
   );
 };
 
-// Same styles as before
+  
 const styles = StyleSheet.create({
-  // (existing styles from previous implementation)
-  // ...
+  
+  
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

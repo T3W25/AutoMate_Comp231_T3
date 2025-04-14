@@ -3,26 +3,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import Car Owner Screens
+  
 import CarOwnerHomeScreen from '../screens/carOwner/CarOwnerHomeScreen';
 import AddVehicleScreen from '../screens/carOwner/AddVehicleScreen';
 import ManageVehiclesScreen from '../screens/carOwner/ManageVehiclesScreen';
 import RentalRequestsScreen from '../screens/carOwner/RentalRequestsScreen';
 import CarOwnerProfileScreen from '../screens/carOwner/CarOwnerProfileScreen';
 
-// Import Mechanic-related screens
+  
 import MechanicSearchScreen from '../screens/renter/MechanicSearchScreen';
 import MechanicDetailsScreen from '../screens/renter/MechanicDetailsScreen';
 import ServiceRequestScreen from '../screens/renter/ServiceRequestScreen';
 
-// Import Chat screens
+  
 import ChatListScreen from '../screens/common/ChatListScreen';
 import ChatRoomScreen from '../screens/common/ChatRoomScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Create a stack navigator for the Mechanic tab
+  
 const MechanicStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -34,7 +34,7 @@ const MechanicStackNavigator = () => {
   );
 };
 
-// Create a stack navigator for Messages tab
+  
 const MessagesStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

@@ -16,7 +16,7 @@ const AdminProfileScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Notification preferences
+  
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [systemAlerts, setSystemAlerts] = useState(true);
@@ -54,7 +54,7 @@ const AdminProfileScreen = ({ navigation }) => {
               await AsyncStorage.removeItem('userToken');
               await AsyncStorage.removeItem('userData');
               
-              // Navigate back to the auth flow
+  
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'RoleSelect' }],

@@ -31,7 +31,7 @@ export const startLocationTracking = async () => {
       throw new Error('Location permission not granted');
     }
     
-    // Check if user is a mechanic
+  
     const userDataString = await AsyncStorage.getItem('userData');
     const userData = JSON.parse(userDataString);
     
@@ -39,7 +39,7 @@ export const startLocationTracking = async () => {
       throw new Error('Only mechanics can track location');
     }
     
-    // Start location tracking
+  
     const locationSubscription = Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.Balanced,
@@ -48,13 +48,13 @@ export const startLocationTracking = async () => {
       },
       async (location) => {
         try {
-          // Send location to server
+  
           await api.post('/location/update', {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
           });
           
-          // Store last location in local storage
+  
           await AsyncStorage.setItem('lastLocation', JSON.stringify({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -62,7 +62,7 @@ export const startLocationTracking = async () => {
           }));
         } catch (error) {
           console.error('Error updating location:', error);
-          // Store in offline queue
+  
           const offlineLocations = await AsyncStorage.getItem('offlineLocations') || '[]';
           const locations = JSON.parse(offlineLocations);
           
@@ -78,7 +78,7 @@ export const startLocationTracking = async () => {
     );
     
     
-    // Store subscription reference
+  
     await AsyncStorage.setItem('locationSubscription', 'active');
     
     return locationSubscription;

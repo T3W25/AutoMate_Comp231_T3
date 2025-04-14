@@ -23,7 +23,7 @@ const RegisterScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
-    // Basic validation
+  
     if (!name || !email || !phone || !password) {
       Alert.alert('Error', 'Please fill all fields');
       return;
@@ -38,7 +38,7 @@ const RegisterScreen = ({ navigation, route }) => {
     try {
       console.log('Sending registration data:', { name, email, role, phone });
       
-      // Prepare the registration data
+  
       const userData = {
         name,
         email,
@@ -47,7 +47,7 @@ const RegisterScreen = ({ navigation, route }) => {
         phone,
       };
       
-      // Call the registration service
+  
       const response = await authService.register(userData);
       
       if (!response || !response.token) {
@@ -56,11 +56,11 @@ const RegisterScreen = ({ navigation, route }) => {
       
       console.log('Registration successful:', response);
       
-      // Store user data
+  
       await AsyncStorage.setItem('userData', JSON.stringify(response));
       await AsyncStorage.setItem('userToken', response.token);
       
-      // Navigate to Dashboard
+  
       navigation.reset({
         index: 0,
         routes: [{ name: 'Dashboard', params: { role: response.role } }],
@@ -70,7 +70,7 @@ const RegisterScreen = ({ navigation, route }) => {
       
       let errorMessage = 'Unable to register. Please try again.';
       
-      // Extract error message from response if available
+  
       if (error.response && error.response.data && error.response.data.message) {
         errorMessage = error.response.data.message;
       } else if (error.message) {

@@ -4,18 +4,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { setupBackgroundSync } from './src/services/syncService';
 import { navigationRef } from './src/utils/navigationRef';
 import NetInfo from '@react-native-community/netinfo';
-// Authentication Screens
+  
 import RoleSelectScreen from './src/screens/auth/RoleSelectScreen';
 import LoginScreen from './src/screens/auth/LoginScreen';
 import RegisterScreen from './src/screens/auth/RegisterScreen';
 import DashboardScreen from './src/screens/DashboardScreen';
 
-// Vehicle Screens
+  
 import VehicleDetailsScreen from './src/screens/renter/VehicleDetailsScreen';
 import VehicleSearchScreen from './src/screens/renter/VehicleSearchScreen';
 import VehicleMapScreen from './src/screens/renter/VehicleMapScreen';
 
-// Mechanic Screens
+  
 import MechanicDetailsScreen from './src/screens/renter/MechanicDetailsScreen';
 import MechanicSearchScreen from './src/screens/renter/MechanicSearchScreen';
 import ServiceRequestScreen from './src/screens/renter/ServiceRequestScreen';
@@ -24,35 +24,35 @@ import MechanicProfileScreen from './src/screens/mechanic/MechanicProfileScreen'
 import ServiceRequestsScreen from './src/screens/mechanic/ServiceRequestsScreen';
 import ServiceRequestDetailsScreen from './src/screens/mechanic/ServiceRequestDetailsScreen';
 
-// Car Owner Screens
+  
 import CarOwnerHomeScreen from './src/screens/carOwner/CarOwnerHomeScreen';
 import AddVehicleScreen from './src/screens/carOwner/AddVehicleScreen';
 import ManageVehiclesScreen from './src/screens/carOwner/ManageVehiclesScreen';
 import RentalRequestsScreen from './src/screens/carOwner/RentalRequestsScreen';
 import CarOwnerProfileScreen from './src/screens/carOwner/CarOwnerProfileScreen';
 
-// Renter Screens
+  
 import RenterHomeScreen from './src/screens/renter/RenterHomeScreen';
 import RenterProfileScreen from './src/screens/renter/RenterProfileScreen';
 import BookingsScreen from './src/screens/renter/BookingsScreen';
 import BookingDetailsScreen from './src/screens/renter/BookingDetailsScreen';
 
-// Common Screens
+  
 import ChatRoomScreen from './src/screens/common/ChatRoomScreen';
 import ChatListScreen from './src/screens/common/ChatListScreen';
 import NetworkStatus from './src/components/NetworkStatus';
 
-// Notifications Screen
+  
 import NotificationsScreen from './src/screens/common/NotificationsScreen';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   useEffect(() => {
-    // Set up offline synchronization
+  
     setupBackgroundSync();
     
-    // Initial sync attempt
+  
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
         synchronizeOfflineData();

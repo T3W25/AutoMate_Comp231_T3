@@ -25,7 +25,7 @@ const ServiceRequestsScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // Refresh requests when the screen is focused
+  
     const unsubscribe = navigation.addListener('focus', () => {
       if (userData) {
         loadServiceRequests();
@@ -60,7 +60,7 @@ const ServiceRequestsScreen = ({ navigation }) => {
       setError(null);
       
       const requests = await mechanicService.getServiceRequests();
-      // Filter based on active tab
+  
       const filteredRequests = requests.filter(req => req.status === activeTab);
       setRequests(filteredRequests);
     } catch (error) {
@@ -79,21 +79,21 @@ const ServiceRequestsScreen = ({ navigation }) => {
 
   const handleAcceptRequest = async (requestId) => {
     try {
-      // Find the request index
+  
       const requestIndex = requests.findIndex(r => r._id === requestId);
       if (requestIndex === -1) return;
 
       const request = requests[requestIndex];
 
-      // Update the request status in the API
+  
       await mechanicService.updateRequestStatus(requestId, 'accepted');
 
-      // Remove from current list since we're on the pending tab
+  
       setRequests(requests.filter(r => r._id !== requestId));
 
-      // Send initial message to customer
+  
       try {
-        // Create a chat conversation
+  
         const conversationId = Date.now().toString();
         const conversation = {
           id: conversationId,
@@ -109,7 +109,7 @@ const ServiceRequestsScreen = ({ navigation }) => {
         const conversationKey = `chat_${userData._id}_${request.customerId}`;
         await AsyncStorage.setItem(conversationKey, JSON.stringify(conversation));
         
-        // Send initial message
+  
         const initialMessage = {
           id: Date.now().toString(),
           sender: userData._id,
@@ -155,10 +155,10 @@ const ServiceRequestsScreen = ({ navigation }) => {
           text: 'Decline',
           onPress: async () => {
             try {
-              // Update the request status in the API
+  
               await mechanicService.updateRequestStatus(requestId, 'declined');
 
-              // Remove from current list
+  
               setRequests(requests.filter(r => r._id !== requestId));
 
               Alert.alert('Success', 'Service request declined.');
@@ -175,10 +175,10 @@ const ServiceRequestsScreen = ({ navigation }) => {
 
   const handleCompleteRequest = async (requestId) => {
     try {
-      // Update the request status in the API
+  
       await mechanicService.updateRequestStatus(requestId, 'completed');
 
-      // Remove from current list
+  
       setRequests(requests.filter(r => r._id !== requestId));
 
       Alert.alert('Success', 'Service request marked as completed!');

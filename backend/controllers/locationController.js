@@ -1,37 +1,37 @@
-// backend/controllers/locationController.js
+  
 const User = require('../models/userModel');
 const MechanicService = require('../models/mechanicServiceModel');
 
-// @desc    Update mechanic location
-// @route   POST /api/location/update
-// @access  Private (mechanics only)
+  
+  
+  
 const updateLocation = async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
     
-    // Validate input
+  
     if (!latitude || !longitude) {
       return res.status(400).json({ message: 'Latitude and longitude are required' });
     }
     
-    // Check if user is a mechanic
+  
     if (req.user.role !== 'mechanic') {
       return res.status(403).json({ message: 'Only mechanics can update location' });
     }
     
-    // Find mechanic profile
+  
     const mechanicProfile = await MechanicService.findOne({ mechanic: req.user._id });
     
     if (!mechanicProfile) {
       return res.status(404).json({ message: 'Mechanic profile not found' });
     }
     
-    // Check if location sharing is enabled
+  
     if (!mechanicProfile.shareLocation) {
       return res.status(400).json({ message: 'Location sharing is disabled' });
     }
     
-    // Update location
+  
     mechanicProfile.currentLocation = {
       latitude,
       longitude,
@@ -54,26 +54,26 @@ const updateLocation = async (req, res) => {
   }
 };
 
-// @desc    Get mechanic location
-// @route   GET /api/location/mechanic/:id
-// @access  Private
+  
+  
+  
 const getMechanicLocation = async (req, res) => {
   try {
     const mechanicId = req.params.id;
     
-    // Find mechanic profile
+  
     const mechanicProfile = await MechanicService.findOne({ mechanic: mechanicId });
     
     if (!mechanicProfile) {
       return res.status(404).json({ message: 'Mechanic profile not found' });
     }
     
-    // Check if location sharing is enabled
+  
     if (!mechanicProfile.shareLocation) {
       return res.status(400).json({ message: 'Location sharing is disabled' });
     }
     
-    // Check if location is available and recent (within last 10 minutes)
+  
     if (!mechanicProfile.currentLocation || 
         !mechanicProfile.currentLocation.lastUpdated || 
         new Date() - new Date(mechanicProfile.currentLocation.lastUpdated) > 10 * 60 * 1000) {

@@ -1,15 +1,15 @@
-// src/screens/DashboardScreen.js
+  
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Import role-specific navigators
+  
 import RenterNavigator from '../navigation/RenterNavigator';
 import CarOwnerNavigator from '../navigation/CarOwnerNavigator';
 import MechanicNavigator from '../navigation/MechanicNavigator';
 import AdminNavigator from '../navigation/AdminNavigator';
 
-// For other roles we'll add placeholders for now
+  
 const AdminDashboard = () => (
   <View style={styles.container}>
     <Text style={styles.text}>Admin Dashboard</Text>
@@ -25,7 +25,7 @@ const FunderDashboard = () => (
 const DashboardScreen = ({ route }) => {
   const { role } = route.params;
 
-  // Render the appropriate dashboard based on user role
+  
   const renderDashboardByRole = () => {
     switch (role) {
       case 'renter':

@@ -1,11 +1,11 @@
-// This is a mock payment service for demonstration purposes
-// In a real app, you would integrate with a payment gateway API
+  
+  
 
 const simulatePaymentProcessing = () => {
     return new Promise((resolve, reject) => {
-      // Simulate network request
+  
       setTimeout(() => {
-        // Random success (90% chance)
+  
         const isSuccess = Math.random() < 0.9;
         
         if (isSuccess) {
@@ -23,12 +23,12 @@ const simulatePaymentProcessing = () => {
   
   export const processPayment = async (paymentDetails) => {
     try {
-      // Validate payment details
+  
       if (!paymentDetails.cardNumber || !paymentDetails.expiryDate || !paymentDetails.cvv) {
         throw new Error('Invalid payment details');
       }
       
-      // Simulate payment processing
+  
       const result = await simulatePaymentProcessing();
       return result;
     } catch (error) {
@@ -38,7 +38,7 @@ const simulatePaymentProcessing = () => {
   };
   
   export const getPaymentMethods = async (userId) => {
-    // In a real app, this would fetch saved payment methods
+  
     return [
       {
         id: 'pm_1',

@@ -27,7 +27,7 @@ const ChatListScreen = ({ navigation }) => {
     if (userData) {
       loadConversations();
       
-      // Add listener for screen focus to reload conversations
+  
       const unsubscribe = navigation.addListener('focus', () => {
         loadConversations();
       });
@@ -60,17 +60,17 @@ const ChatListScreen = ({ navigation }) => {
     try {
       setLoading(true);
       
-      // Get chat list from service
+  
       console.log('Getting chat list for user:', userData._id);
       const chatList = await getChatList(userData._id);
       
       console.log(`Found ${chatList.length} conversations`);
       
-      // Process conversations to ensure they have all required fields
+  
       const processedChats = chatList.map(chat => {
         const otherParticipant = chat.participants.find(id => id !== userData._id);
         
-        // Create a lastMessage object if it doesn't exist
+  
         if (!chat.lastMessage && chat.messages && chat.messages.length > 0) {
           const lastMsg = chat.messages[chat.messages.length - 1];
           chat.lastMessage = {
@@ -81,12 +81,12 @@ const ChatListScreen = ({ navigation }) => {
           };
         }
         
-        // If no participantNames, create an empty object
+  
         if (!chat.participantNames) {
           chat.participantNames = {};
         }
         
-        // If other participant name is missing, use a fallback name
+  
         if (!chat.participantNames[otherParticipant]) {
           chat.participantNames[otherParticipant] = 'User';
         }
@@ -111,27 +111,27 @@ const ChatListScreen = ({ navigation }) => {
     const date = new Date(timestamp);
     const now = new Date();
     
-    // Invalid date
+  
     if (isNaN(date.getTime())) return '';
     
-    // Same day
+  
     if (date.toDateString() === now.toDateString()) {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
     
-    // Within a week
+  
     const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
     if (diffDays < 7) {
       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       return days[date.getDay()];
     }
     
-    // Older
+  
     return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
   };
 
   const getUserRoleIcon = (conversation, otherParticipant) => {
-    // If we have role information, use it to determine icon
+  
     if (conversation.participantRoles && conversation.participantRoles[otherParticipant]) {
       const role = conversation.participantRoles[otherParticipant];
       
@@ -147,7 +147,7 @@ const ChatListScreen = ({ navigation }) => {
       }
     }
     
-    // Otherwise, don't show a role icon
+  
     return null;
   };
 
@@ -161,7 +161,7 @@ const ChatListScreen = ({ navigation }) => {
       return null; // Skip conversations without other participant
     }
     
-    // Define the last message details
+  
     const lastMessage = item.lastMessage || {};
     const hasUnreadMessages = item.messages?.some(
       msg => !msg.read && msg.sender !== userData._id

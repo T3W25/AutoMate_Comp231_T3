@@ -18,7 +18,7 @@ const ManageVehiclesScreen = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   
-  // Load vehicles when screen is focused
+  
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadVehicles();
@@ -54,7 +54,7 @@ const ManageVehiclesScreen = ({ navigation }) => {
         isAvailable: !currentStatus 
       });
       
-      // Update local state
+  
       setVehicles(
         vehicles.map(vehicle => 
           vehicle._id === id 
@@ -83,7 +83,7 @@ const ManageVehiclesScreen = ({ navigation }) => {
             try {
               await vehicleService.deleteVehicle(id);
               
-              // Update local state
+  
               setVehicles(vehicles.filter(vehicle => vehicle._id !== id));
               
               Alert.alert('Success', 'Vehicle deleted successfully');
